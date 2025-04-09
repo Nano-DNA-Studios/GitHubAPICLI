@@ -3,9 +3,9 @@ using NanoDNA.CLIFramework.Flags;
 using System;
 using System.Collections.Generic;
 
-namespace GitHubAPICLI
+namespace GitHubAPICLI.Application
 {
-    internal class GitHubCLIDataManager : DataManager
+    public class GitHubCLIDataManager : DataManager
     {
         public GitHubCLIDataManager(Setting settings, Dictionary<Type, Flag> globalFlags) : base(settings, globalFlags)
         {

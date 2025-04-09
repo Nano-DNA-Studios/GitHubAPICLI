@@ -1,4 +1,4 @@
-﻿using System;
+﻿using GitHubAPICLI.Application;
 
 namespace GitHubAPICLI
 {
@@ -7,10 +7,8 @@ namespace GitHubAPICLI
         static void Main(string[] args)
         {
 
-            GitHubAPICLI app = new GitHubAPICLI();
+            GitHubAPICLIApplication app = new GitHubAPICLIApplication();
             app.Run(args);
-
-
         }
     }
 }

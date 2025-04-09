@@ -30,7 +30,8 @@
 	
 	<!-- NuGet Package References -->
 	<ItemGroup>
-	  <PackageReference Include="NanoDNA.CLIFramework" Version="0.1.0" />
+	  <PackageReference Include="NanoDNA.CLIFramework" Version="0.1.1" />
+	  <PackageReference Include="NanoDNA.GitHubManager" Version="0.1.0" />
 	</ItemGroup>
 
 </Project>
