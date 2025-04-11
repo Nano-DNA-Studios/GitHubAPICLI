@@ -8,7 +8,7 @@ namespace GitHubAPICLI.Application
     {
         public GitHubAPICLIApplication() : base()
         {
-            Console.WriteLine(JsonConvert.SerializeObject(this, Formatting.Indented));
+           // Console.WriteLine(JsonConvert.SerializeObject(this, Formatting.Indented));
         }
     }
 }

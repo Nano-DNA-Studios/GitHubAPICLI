@@ -6,7 +6,6 @@ namespace GitHubAPICLI
     {
         static void Main(string[] args)
         {
-
             GitHubAPICLIApplication app = new GitHubAPICLIApplication();
             app.Run(args);
         }

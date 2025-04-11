@@ -1,6 +1,5 @@
 ﻿using NanoDNA.CLIFramework.Data;
 using Newtonsoft.Json;
-using System.IO;
 
 namespace GitHubAPICLI.Application
 {

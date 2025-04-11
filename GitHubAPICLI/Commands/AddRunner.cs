@@ -1,22 +1,25 @@
 ﻿using GitHubAPICLI.Application;
 using NanoDNA.CLIFramework.Commands;
 using NanoDNA.CLIFramework.Data;
-using NanoDNA.GitHubManager;
 using NanoDNA.GitHubManager.Models;
-using Newtonsoft.Json;
+using NanoDNA.GitHubManager;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GitHubAPICLI.Commands
 {
-    internal class GetRepo : Command
+    internal class AddRunner : Command
     {
-        public GetRepo(IDataManager dataManager) : base(dataManager)
+        public AddRunner(IDataManager dataManager) : base(dataManager)
         {
         }
 
-        public override string Name => "getrepo";
+        public override string Name => "addrunner";
 
-        public override string Description => "Gets the JSON of a Repository";
+        public override string Description => "Adds a GitHub Action Runner to a Repository";
 
         public override void Execute(string[] args)
         {
@@ -38,7 +41,15 @@ namespace GitHubAPICLI.Commands
 
             Repository repo = Repository.GetRepository(args[0], args[1]);
 
-            Console.WriteLine(JsonConvert.SerializeObject(repo, Formatting.Indented));
+            RunnerBuilder runnerBuilder = new RunnerBuilder(args[1], "mrdnalex/github-action-worker-container-dotnet", repo, false);
+
+            runnerBuilder.AddLabel("CLI-Tool");
+
+            Runner runner = runnerBuilder.Build();
+
+            runner.Start();
+
+            //Save the runners info so that it can be unregistered later?
         }
     }
 }
