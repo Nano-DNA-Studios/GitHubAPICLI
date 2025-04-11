@@ -49,6 +49,8 @@ namespace GitHubAPICLI.Commands
 
             runner.Start();
 
+            //Maybe add the runner and it's repo to the settings for currently active runners?
+
             //Save the runners info so that it can be unregistered later?
         }
     }
