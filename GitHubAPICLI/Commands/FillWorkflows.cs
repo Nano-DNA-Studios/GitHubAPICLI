@@ -56,12 +56,6 @@ namespace GitHubAPICLI.Commands
 
                 runner.Start();
             }
-
-
-
-
-
-
         }
     }
 }
