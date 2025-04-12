@@ -17,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="README.md" Pack="true" PackagePath="" />
+		<None Include="..\README.md" Pack="true" PackagePath="" />
 		<None Include="bin\x64\Release\net*\$(AssemblyName).exe" Pack="true" PackagePath="runtimes\win-x64\lib" />
 		<None Include="bin\x64\Release\net*\$(AssemblyName).xml" Pack="true" PackagePath="runtimes\win-x64\lib" />
 		<None Include="bin\x64\Release\net*\NS2_Interop.dll" Pack="true" PackagePath="runtimes\win-x64\native" />
@@ -28,8 +28,8 @@
 
 	<!-- Development Project References -->
 	<ItemGroup Condition="'$(Configuration)' == 'Debug' and '$(RepositoryName)' == 'GitHubAPICLI-Solution'">
-		<ProjectReference Include="..\Submodules\NanoDNA.CLIFramework\NanoDNA.CLIFramework\NanoDNA.CLIFramework.csproj" />
-		<ProjectReference Include="..\Submodules\NanoDNA.GitHubManager\NanoDNA.GitHubManager\NanoDNA.GitHubManager.csproj" />
+		<ProjectReference Include="..\..\NanoDNA.CLIFramework\NanoDNA.CLIFramework\NanoDNA.CLIFramework.csproj" />
+		<ProjectReference Include="..\..\NanoDNA.GitHubManager\NanoDNA.GitHubManager\NanoDNA.GitHubManager.csproj" />
 	</ItemGroup>
 
 	<!-- NuGet Package References -->
