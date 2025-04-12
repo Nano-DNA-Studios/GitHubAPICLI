@@ -12,7 +12,8 @@
 	<!-- Repo Info -->
 	<PropertyGroup>
 		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>https://github.com/Nano-DNA-Studios/NanoDNA.DockerManager</RepositoryUrl>
+		<RepositoryName>GitHubAPICLI</RepositoryName>
+		<RepositoryUrl>https://github.com/Nano-DNA-Studios/$(RepositoryName)</RepositoryUrl>
 	</PropertyGroup>
 
 	<!-- Project Configuration Metadata -->

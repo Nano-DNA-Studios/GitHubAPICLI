@@ -21,17 +21,21 @@
 		<None Include="bin\x64\Release\net*\$(AssemblyName).exe" Pack="true" PackagePath="runtimes\win-x64\lib" />
 		<None Include="bin\x64\Release\net*\$(AssemblyName).xml" Pack="true" PackagePath="runtimes\win-x64\lib" />
 		<None Include="bin\x64\Release\net*\NS2_Interop.dll" Pack="true" PackagePath="runtimes\win-x64\native" />
-
 		<None Include="bin\x86\Release\net*\$(AssemblyName).exe" Pack="true" PackagePath="runtimes\win-x86\lib" />
 		<None Include="bin\x86\Release\net*\$(AssemblyName).xml" Pack="true" PackagePath="runtimes\win-x86\lib" />
 		<None Include="bin\x86\Release\net*\NS2_Interop.dll" Pack="true" PackagePath="runtimes\win-x86\native" />
 	</ItemGroup>
-	
-	
+
+	<!-- Development Project References -->
+	<ItemGroup Condition="'$(Configuration)' == 'Debug' and '$(RepositoryName)' == 'GitHubAPICLI'">
+		<ProjectReference Include="..\Submodules\NanoDNA.CLIFramework\NanoDNA.CLIFramework\NanoDNA.CLIFramework.csproj" />
+		<ProjectReference Include="..\Submodules\NanoDNA.GitHubManager\NanoDNA.GitHubManager\NanoDNA.GitHubManager.csproj" />
+	</ItemGroup>
+
 	<!-- NuGet Package References -->
-	<ItemGroup>
-	  <PackageReference Include="NanoDNA.CLIFramework" Version="0.1.1" />
-	  <PackageReference Include="NanoDNA.GitHubManager" Version="0.1.0" />
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<PackageReference Include="NanoDNA.CLIFramework" Version="0.1.1" />
+		<PackageReference Include="NanoDNA.GitHubManager" Version="0.1.0" />
 	</ItemGroup>
 
 </Project>
