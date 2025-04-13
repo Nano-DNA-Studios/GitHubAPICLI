@@ -4,10 +4,6 @@ using NanoDNA.CLIFramework.Data;
 using NanoDNA.GitHubManager.Models;
 using NanoDNA.GitHubManager;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GitHubAPICLI.Commands
 {
@@ -31,27 +27,33 @@ namespace GitHubAPICLI.Commands
                 return;
             }
 
-            if (args.Length != 2)
+            if (args.Length < 4)
             {
-                Console.WriteLine("Invalid Number of Arguments Provided, only the GitHub Owner and Repository Name can be provided");
+                Console.WriteLine("Invalid Number of Arguments Provided, the Repo Owner, Repo Name, Runner Name and Runner Image must be provided.");
                 return;
             }
 
+            string repoOwner = args[0];
+            string repoName = args[1];
+            string runnerName = args[2];
+            string runnerImage = args[3];
+
             GitHubAPIClient.SetGitHubPAT(settings.GitHubPAT);
 
-            Repository repo = Repository.GetRepository(args[0], args[1]);
+            Repository repo = Repository.GetRepository(repoOwner, repoName);
 
-            RunnerBuilder runnerBuilder = new RunnerBuilder(args[1], "mrdnalex/github-action-worker-container-dotnet", repo, false);
-
-            runnerBuilder.AddLabel("CLI-Tool");
+            RunnerBuilder runnerBuilder = new RunnerBuilder(runnerName, runnerImage, repo, false);
 
             Runner runner = runnerBuilder.Build();
 
             runner.Start();
+            runner.SyncInfo();
 
-            //Maybe add the runner and it's repo to the settings for currently active runners?
+            settings.AddActionWorkerConfig(new ActionWorkerConfig(repoOwner, repoName, runnerImage));
+            settings.AddRegisteredRunner(new RegisteredRunner(repoOwner, repoName, runner.ID, runner.Name));
+            settings.SaveSettings();
 
-            //Save the runners info so that it can be unregistered later?
+            Console.WriteLine($"Runner {runner.Name} added to repository {repo.Name}.");
         }
     }
 }

@@ -27,15 +27,15 @@
 	</ItemGroup>
 
 	<!-- Development Project References -->
-	<ItemGroup Condition="'$(Configuration)' == 'Debug' and '$(RepositoryName)' == 'GitHubAPICLI-Solution'">
+	<ItemGroup Condition="'$(Configuration)' == 'Debug' and '$(RepositoryName)' == 'GitHubAPICLI-Solution' ">
 		<ProjectReference Include="..\..\NanoDNA.CLIFramework\NanoDNA.CLIFramework\NanoDNA.CLIFramework.csproj" />
 		<ProjectReference Include="..\..\NanoDNA.GitHubManager\NanoDNA.GitHubManager\NanoDNA.GitHubManager.csproj" />
 	</ItemGroup>
 
 	<!-- NuGet Package References -->
 	<ItemGroup>
-		<PackageReference Include="NanoDNA.CLIFramework" Version="0.1.1" />
-		<PackageReference Include="NanoDNA.GitHubManager" Version="0.1.0" />
+		<PackageReference Include="NanoDNA.CLIFramework" Version="0.1.1" Condition="'$(Configuration)' == 'Release'" />
+		<PackageReference Include="NanoDNA.GitHubManager" Version="0.1.0" Condition="'$(Configuration)' == 'Release'" />
 	</ItemGroup>
-
+	
 </Project>

@@ -1,22 +1,21 @@
 ﻿using GitHubAPICLI.Application;
 using NanoDNA.CLIFramework.Commands;
 using NanoDNA.CLIFramework.Data;
-using NanoDNA.GitHubManager;
 using NanoDNA.GitHubManager.Models;
-using Newtonsoft.Json;
+using NanoDNA.GitHubManager;
 using System;
 
 namespace GitHubAPICLI.Commands
 {
-    internal class GetRepo : Command
+    internal class RegisterRunner : Command
     {
-        public GetRepo(IDataManager dataManager) : base(dataManager)
+        public RegisterRunner(IDataManager dataManager) : base(dataManager)
         {
         }
 
-        public override string Name => "getrepo";
+        public override string Name => "registerrunner";
 
-        public override string Description => "Gets the JSON of a Repository";
+        public override string Description => throw new NotImplementedException();
 
         public override void Execute(string[] args)
         {
@@ -28,7 +27,14 @@ namespace GitHubAPICLI.Commands
                 return;
             }
 
-            if (args.Length != 2)
+            //if (args.Length == 0)
+            //{
+            //    //List out all the runners that are registered in the settings
+            //    Console.WriteLine("No Arguments Provided, please provide the GitHub Owner and Repository Name");
+            //    return;
+            //}
+
+            if (args.Length != 3)
             {
                 Console.WriteLine("Invalid Number of Arguments Provided, only the GitHub Owner and Repository Name can be provided");
                 return;
@@ -38,7 +44,12 @@ namespace GitHubAPICLI.Commands
 
             Repository repo = Repository.GetRepository(args[0], args[1]);
 
-            Console.WriteLine(JsonConvert.SerializeObject(repo, Formatting.Indented));
+            settings.AddActionWorkerConfig(new ActionWorkerConfig(repo.Owner.Login, repo.Name, args[2]));
+
+
+
+
+
         }
     }
 }

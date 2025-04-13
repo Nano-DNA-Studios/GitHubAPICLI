@@ -3,12 +3,7 @@ using NanoDNA.CLIFramework.Commands;
 using NanoDNA.CLIFramework.Data;
 using NanoDNA.GitHubManager;
 using NanoDNA.GitHubManager.Models;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GitHubAPICLI.Commands
 {
@@ -32,6 +27,13 @@ namespace GitHubAPICLI.Commands
                 return;
             }
 
+            if (args.Length == 0)
+            {
+                //List out all the runners that are registered in the settings
+                Console.WriteLine("No Arguments Provided, please provide the GitHub Owner and Repository Name");
+                return;
+            }
+
             if (args.Length != 2)
             {
                 Console.WriteLine("Invalid Number of Arguments Provided, only the GitHub Owner and Repository Name can be provided");
@@ -44,30 +46,37 @@ namespace GitHubAPICLI.Commands
 
             Runner[] runners = repo.GetRunners();
 
-            if (runners.Length == 0)
+            if (runners == null || runners.Length == 0)
             {
                 Console.WriteLine("No Runners Found");
                 return;
             }
 
             foreach (Runner runner in runners)
+                DisplayRunner(runner);
+        }
+
+        /// <summary>
+        /// Displays all the Runners that are Registered to a Repository in a Formatted Manner
+        /// </summary>
+        /// <param name="runner"></param>
+        private void DisplayRunner (Runner runner)
+        {
+            Console.WriteLine($"========== Runner {runner.ID} ==========");
+            Console.WriteLine($"Name: {runner.Name}");
+            Console.WriteLine($"OS: {runner.OS}");
+            Console.WriteLine($"Status: {runner.Status}");
+            Console.WriteLine($"Busy: {runner.Busy}");
+            Console.WriteLine($"Labels :");
+
+            for (int i = 0; i < runner.Labels.Length; i++)
             {
-                Console.WriteLine($"========== Runner {runner.ID} ==========");
-                Console.WriteLine($"Name: {runner.Name}");
-                Console.WriteLine($"OS: {runner.OS}");
-                Console.WriteLine($"Status: {runner.Status}");
-                Console.WriteLine($"Busy: {runner.Busy}");
-                Console.WriteLine($"Labels :");
+                RunnerLabel label = runner.Labels[i];
 
-                for (int i = 0; i < runner.Labels.Length; i++)
-                {
-                    RunnerLabel label = runner.Labels[i];
-
-                    Console.WriteLine($"  {label.Name} ({label.Type})");
-                }
-
-                Console.WriteLine("==============================");
+                Console.WriteLine($"  {label.Name} ({label.Type})");
             }
+
+            Console.WriteLine("==============================");
         }
     }
 }
