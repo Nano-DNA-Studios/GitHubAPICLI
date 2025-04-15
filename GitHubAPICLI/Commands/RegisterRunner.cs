@@ -45,11 +45,6 @@ namespace GitHubAPICLI.Commands
             Repository repo = Repository.GetRepository(args[0], args[1]);
 
             settings.AddActionWorkerConfig(new ActionWorkerConfig(repo.Owner.Login, repo.Name, args[2]));
-
-
-
-
-
         }
     }
 }

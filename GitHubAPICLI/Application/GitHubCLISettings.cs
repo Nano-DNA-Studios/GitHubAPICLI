@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace GitHubAPICLI.Application
 {
+    /// <summary>
+    /// Defines the Settings for the GitHub API CLI Application
+    /// </summary>
     public class GitHubCLISettings : Setting
     {
         /// <inheritdoc/>
