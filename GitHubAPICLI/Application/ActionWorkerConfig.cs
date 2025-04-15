@@ -44,5 +44,16 @@
                    RepoName == config.RepoName &&
                    ContainerImage == config.ContainerImage;
         }
+
+        /// <summary>
+        /// Checks if the Current Action Worker Configuration shares the Same Repository as Another
+        /// </summary>
+        /// <param name="config">Action Worker Config to Compare</param>
+        /// <returns>True if they share the Same Repository Info, False otherwise</returns>
+        public bool SameRepoAs (ActionWorkerConfig config)
+        {
+            return RepoOwner == config.RepoOwner &&
+                   RepoName == config.RepoName;
+        }
     }
 }

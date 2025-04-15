@@ -1,5 +1,6 @@
 ﻿using NanoDNA.CLIFramework.Data;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,11 +51,29 @@ namespace GitHubAPICLI.Application
         /// <param name="worker">Worker Config to Register to the CLI App</param>
         public void AddActionWorkerConfig(ActionWorkerConfig worker)
         {
-            if (ActionWorkerConfigs.Any((repoWorker) => repoWorker.RepoOwner == worker.RepoOwner && repoWorker.RepoName == worker.RepoName && repoWorker.ContainerImage == worker.ContainerImage))
+            if (!ActionWorkerConfigs.Any((repoWorker) => repoWorker.SameRepoAs(worker)))
+            {
+                ActionWorkerConfigs.Add(worker);
+                return;
+            }
+
+            Console.WriteLine("Replacing");
+            ReplaceActionWorkerConfig(worker);
+        }
+
+        /// <summary>
+        /// Replaces a Action Worker Config info with the Latest info
+        /// </summary>
+        /// <param name="worker">Action Worker Config Info</param>
+        public void ReplaceActionWorkerConfig(ActionWorkerConfig worker)
+        {
+            if (!ActionWorkerConfigs.Any((repoWorker) => repoWorker.SameRepoAs(worker)))
                 return;
 
+            ActionWorkerConfigs.Remove(ActionWorkerConfigs.FirstOrDefault((repoWorker) => repoWorker.SameRepoAs(worker)));
             ActionWorkerConfigs.Add(worker);
         }
+
 
         /// <summary>
         /// Adds a Registered Action Worker that has been Spawned by the CLI Application
