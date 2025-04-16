@@ -180,7 +180,7 @@ namespace GitHubAPICLI.Commands
 
                 if (repository.GetRunners().Any((runner) => runner.ID == registeredRunner.RunnerID) && !repository.TryRemoveRunner(registeredRunner.RunnerID))
                 {
-                    Console.WriteLine($"Failed to remove registered runner {registeredRunner.RunnerName}(ID : {registeredRunner.RunnerID}) from {repository.FullName}");
+                    Console.WriteLine($"Failed to remove registered runner {registeredRunner.RunnerName} (ID : {registeredRunner.RunnerID}) from {repository.FullName}");
                     continue;
                 }
 

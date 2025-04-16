@@ -82,6 +82,8 @@ namespace GitHubAPICLI.Commands
 
             WorkflowRun[] workflows = repo.GetWorkflows();
 
+            Console.WriteLine($"Filling in Workflows for {repo.FullName}");
+
             foreach (WorkflowRun workflow in workflows)
             {
                 if (workflow.Status != "queued") //Add a Dictionary or some kind of Enum with a Converter to string for it
@@ -96,8 +98,12 @@ namespace GitHubAPICLI.Commands
                 runner.Start();
                 runner.SyncInfo();
 
+                Console.WriteLine($"Runner {runner.Name} started for Workflow {workflow.ID}");
+
                 settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
             }
+
+            settings.SaveSettings();
         }
     }
 }
