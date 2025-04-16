@@ -7,9 +7,7 @@ namespace GitHubAPICLI.Commands
 {
     internal class GetWorkflowConfigs : Command
     {
-        public GetWorkflowConfigs(IDataManager dataManager) : base(dataManager)
-        {
-        }
+        public GetWorkflowConfigs(IDataManager dataManager) : base(dataManager) { }
 
         public override string Name => "getworkflowconfigs";
 

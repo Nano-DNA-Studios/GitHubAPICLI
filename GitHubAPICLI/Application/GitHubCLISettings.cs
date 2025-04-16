@@ -57,7 +57,6 @@ namespace GitHubAPICLI.Application
                 return;
             }
 
-            Console.WriteLine("Replacing");
             ReplaceActionWorkerConfig(worker);
         }
 

@@ -6,8 +6,6 @@ using NanoDNA.GitHubManager;
 using System;
 using System.Linq;
 using NanoDNA.DockerManager;
-using System.Text;
-using System.Globalization;
 
 namespace GitHubAPICLI.Commands
 {
@@ -17,9 +15,7 @@ namespace GitHubAPICLI.Commands
 
         //Optional not fill in the repo, org and runner name, and remove all the ones that are stored / tracked in settings
 
-        public RemoveRunner(IDataManager dataManager) : base(dataManager)
-        {
-        }
+        public RemoveRunner(IDataManager dataManager) : base(dataManager) { }
 
         public override string Name => "removerunner";
 

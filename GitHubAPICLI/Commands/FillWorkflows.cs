@@ -9,9 +9,7 @@ namespace GitHubAPICLI.Commands
 {
     internal class FillWorkflows : Command
     {
-        public FillWorkflows(IDataManager dataManager) : base(dataManager)
-        {
-        }
+        public FillWorkflows(IDataManager dataManager) : base(dataManager) { }
 
         public override string Name => "fillworkflows";
 
@@ -27,9 +25,13 @@ namespace GitHubAPICLI.Commands
                 return;
             }
 
+            GitHubAPIClient.SetGitHubPAT(settings.GitHubPAT);
+
             if (args.Length == 0)
             {
-                //Go through all the Registered Repos
+                Console.WriteLine("Filling in all Workflows for all Workflows in Repositories that have Action Worker Configs");
+                FillAllWorkflows();
+                return;
             }
 
             if (args.Length != 2)
@@ -38,18 +40,43 @@ namespace GitHubAPICLI.Commands
                 return;
             }
 
-            GitHubAPIClient.SetGitHubPAT(settings.GitHubPAT);
-
             Repository repo = Repository.GetRepository(args[0], args[1]);
 
+            if (repo == null)
+            {
+                Console.WriteLine($"Repository {args[0]}/{args[1]} not found.");
+                return;
+            }
+
             FillRepoWorkflows(repo);
+        }
+
+        /// <summary>
+        /// Fills in All the Hanging Workflows for All the Repositories that have Registered Action Worker Configs
+        /// </summary>
+        private void FillAllWorkflows()
+        {
+            GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+
+            foreach (ActionWorkerConfig workerConfig in settings.ActionWorkerConfigs)
+            {
+                Repository repo = Repository.GetRepository(workerConfig.RepoOwner, workerConfig.RepoName);
+
+                if (repo == null)
+                {
+                    Console.WriteLine($"Repository {workerConfig.RepoOwner}/{workerConfig.RepoName} not found.");
+                    continue;
+                }
+
+                FillRepoWorkflows(repo);
+            }
         }
 
         /// <summary>
         /// Fills in All Hanging Workflows for a Repository by Spawning a GitHub Action Worker for them
         /// </summary>
         /// <param name="repo">Repository to Fill In</param>
-        private void FillRepoWorkflows (Repository repo)
+        private void FillRepoWorkflows(Repository repo)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
 

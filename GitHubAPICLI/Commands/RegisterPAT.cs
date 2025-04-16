@@ -7,9 +7,7 @@ namespace GitHubAPICLI.Commands
 {
     internal class RegisterPAT : Command
     {
-        public RegisterPAT(IDataManager dataManager) : base(dataManager)
-        {
-        }
+        public RegisterPAT(IDataManager dataManager) : base(dataManager) { }
 
         public override string Name => "registerpat";
 

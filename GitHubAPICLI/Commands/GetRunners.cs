@@ -9,9 +9,7 @@ namespace GitHubAPICLI.Commands
 {
     internal class GetRunners : Command
     {
-        public GetRunners(IDataManager dataManager) : base(dataManager)
-        {
-        }
+        public GetRunners(IDataManager dataManager) : base(dataManager) { }
 
         public override string Name => "getrunners";
 
@@ -27,40 +25,77 @@ namespace GitHubAPICLI.Commands
                 return;
             }
 
-            if (args.Length == 0)
-            {
-                //List out all the runners that are registered in the settings
-                Console.WriteLine("No Arguments Provided, please provide the GitHub Owner and Repository Name");
-                return;
-            }
-
-            if (args.Length != 2)
-            {
-                Console.WriteLine("Invalid Number of Arguments Provided, only the GitHub Owner and Repository Name can be provided");
-                return;
-            }
-
             GitHubAPIClient.SetGitHubPAT(settings.GitHubPAT);
 
-            Repository repo = Repository.GetRepository(args[0], args[1]);
+            if (args.Length == 0)
+            {
+                DisplayAllRunners();
+                return;
+            }
+
+            if (args.Length == 2)
+            {
+                DisplayRepoRunners(args[0], args[1]);
+                return;
+            }
+
+            Console.WriteLine("Invalid Number of Arguments Provided, only the GitHub Owner and Repository Name can be provided, or None");
+        }
+
+        /// <summary>
+        /// Displays all the Runners for the Repositories that have Action Worker Configs Registered
+        /// </summary>
+        private void DisplayAllRunners()
+        {
+            GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+
+            foreach (ActionWorkerConfig workerConfig in settings.ActionWorkerConfigs)
+            {
+                DisplayRepoRunners(workerConfig.RepoOwner, workerConfig.RepoName);
+                Console.WriteLine("\n");
+            } 
+        }
+
+        /// <summary>
+        /// Displays all the Runners Associated to a Single Repository
+        /// </summary>
+        /// <param name="repoOwner">Name of the Repository Owner</param>
+        /// <param name="repoName">Name of the Repository</param>
+        private void DisplayRepoRunners(string repoOwner, string repoName)
+        {
+            Repository repo = Repository.GetRepository(repoOwner, repoName);
+
+            if (repo == null)
+            {
+                Console.WriteLine($"Repository {repoOwner}/{repoName} not found.");
+                return;
+            }
 
             Runner[] runners = repo.GetRunners();
 
             if (runners == null || runners.Length == 0)
             {
-                Console.WriteLine("No Runners Found");
+                Console.WriteLine($"No Runners Found for {repo.Owner.Login}/{repo.Name}");
                 return;
             }
 
+            Console.WriteLine($"========== {repo.Owner.Login}/{repo.Name} Runners ==========\n");
+
             foreach (Runner runner in runners)
+            {
                 DisplayRunner(runner);
+                Console.WriteLine("\n");
+            }
+                
+
+            Console.WriteLine("===================================================");
         }
 
         /// <summary>
         /// Displays all the Runners that are Registered to a Repository in a Formatted Manner
         /// </summary>
         /// <param name="runner"></param>
-        private void DisplayRunner (Runner runner)
+        private void DisplayRunner(Runner runner)
         {
             Console.WriteLine($"========== Runner {runner.ID} ==========");
             Console.WriteLine($"Name: {runner.Name}");

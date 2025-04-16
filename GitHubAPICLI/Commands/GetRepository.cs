@@ -9,9 +9,7 @@ namespace GitHubAPICLI.Commands
 {
     internal class GetRepository : Command
     {
-        public GetRepository(IDataManager dataManager) : base(dataManager)
-        {
-        }
+        public GetRepository(IDataManager dataManager) : base(dataManager) { }
 
         public override string Name => "getrepository";
 
@@ -27,13 +25,19 @@ namespace GitHubAPICLI.Commands
                 return;
             }
 
-            if (args.Length != 2)
+            GitHubAPIClient.SetGitHubPAT(settings.GitHubPAT);
+
+            if (args.Length == 0)
             {
-                Console.WriteLine("Invalid Number of Arguments Provided, only the GitHub Owner and Repository Name can be provided");
+                DisplayAllRepos();
                 return;
             }
 
-            GitHubAPIClient.SetGitHubPAT(settings.GitHubPAT);
+            if (args.Length != 2)
+            {
+                Console.WriteLine("Invalid Number of Arguments Provided, only the GitHub Owner and Repository Name can be provided, or None");
+                return;
+            }
 
             Repository repo = Repository.GetRepository(args[0], args[1]);
 
@@ -44,6 +48,24 @@ namespace GitHubAPICLI.Commands
             }
 
             DisplayRepoInfo(repo);
+        }
+
+        private void DisplayAllRepos ()
+        {
+            GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+
+            foreach (ActionWorkerConfig workerConfig in settings.ActionWorkerConfigs)
+            {
+                Repository repo = Repository.GetRepository(workerConfig.RepoOwner, workerConfig.RepoName);
+
+                if (repo == null)
+                {
+                    Console.WriteLine($"Repository {workerConfig.RepoOwner}/{workerConfig.RepoName} not found.");
+                    continue;
+                }
+
+                DisplayRepoInfo(repo);
+            }
         }
 
         /// <summary>

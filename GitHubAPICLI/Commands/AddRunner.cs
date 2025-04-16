@@ -9,9 +9,7 @@ namespace GitHubAPICLI.Commands
 {
     internal class AddRunner : Command
     {
-        public AddRunner(IDataManager dataManager) : base(dataManager)
-        {
-        }
+        public AddRunner(IDataManager dataManager) : base(dataManager) { }
 
         public override string Name => "addrunner";
 
@@ -27,6 +25,8 @@ namespace GitHubAPICLI.Commands
                 return;
             }
 
+            GitHubAPIClient.SetGitHubPAT(settings.GitHubPAT);
+
             if (args.Length < 4)
             {
                 Console.WriteLine("Invalid Number of Arguments Provided, the Repo Owner, Repo Name, Runner Name and Runner Image must be provided.");
@@ -38,9 +38,13 @@ namespace GitHubAPICLI.Commands
             string runnerName = args[2];
             string runnerImage = args[3];
 
-            GitHubAPIClient.SetGitHubPAT(settings.GitHubPAT);
-
             Repository repo = Repository.GetRepository(repoOwner, repoName);
+
+            if (repo == null)
+            {
+                Console.WriteLine($"Repository {repoOwner}/{repoName} not found.");
+                return;
+            }
 
             RunnerBuilder runnerBuilder = new RunnerBuilder(runnerName, runnerImage, repo, false);
 

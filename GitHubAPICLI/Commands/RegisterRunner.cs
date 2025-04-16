@@ -9,9 +9,7 @@ namespace GitHubAPICLI.Commands
 {
     internal class RegisterRunner : Command
     {
-        public RegisterRunner(IDataManager dataManager) : base(dataManager)
-        {
-        }
+        public RegisterRunner(IDataManager dataManager) : base(dataManager) { }
 
         public override string Name => "registerrunner";
 
