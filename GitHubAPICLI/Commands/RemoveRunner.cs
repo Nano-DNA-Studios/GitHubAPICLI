@@ -155,6 +155,10 @@ namespace GitHubAPICLI.Commands
             Console.WriteLine($"Removed all Runners from {repo.FullName}");
         }
 
+        //
+        //Eventually Convert this to removing all runners associated to the Repository
+        //
+
         /// <summary>
         /// Removes all the Saved Registered Runners
         /// </summary>
