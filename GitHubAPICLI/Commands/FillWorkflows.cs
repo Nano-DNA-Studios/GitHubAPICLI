@@ -98,7 +98,7 @@ namespace GitHubAPICLI.Commands
                 runner.Start();
                 runner.SyncInfo();
 
-                Console.WriteLine($"Runner {runner.Name} started for Workflow {workflow.ID}");
+                Console.WriteLine($"Runner {runner.Name} started for Workflow {workflow.ID} in {repo.FullName}");
 
                 settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
             }
