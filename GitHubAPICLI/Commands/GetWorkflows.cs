@@ -53,7 +53,7 @@ namespace GitHubAPICLI.Commands
             DisplayRepositoryWorkflows(repo);
         }
 
-        private void DisplayRegisteredRepoWorkflows ()
+        private void DisplayRegisteredRepoWorkflows()
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
 
@@ -71,7 +71,7 @@ namespace GitHubAPICLI.Commands
             }
         }
 
-        private void DisplayRepositoryWorkflows (Repository repo)
+        private void DisplayRepositoryWorkflows(Repository repo)
         {
             WorkflowRun[] workflowRuns = repo.GetWorkflows();
 
@@ -92,10 +92,10 @@ namespace GitHubAPICLI.Commands
             foreach (WorkflowRun workflow in queuedRuns)
             {
                 DisplayWorkflowInfo(workflow);
-            } 
+            }
         }
 
-        private void DisplayWorkflowInfo (WorkflowRun workflow)
+        private void DisplayWorkflowInfo(WorkflowRun workflow)
         {
             Console.WriteLine($"========== Workflow {workflow.ID} ==========");
             Console.WriteLine($"Name: {workflow.Name}");
