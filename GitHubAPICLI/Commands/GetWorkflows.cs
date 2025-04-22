@@ -107,33 +107,6 @@ namespace GitHubAPICLI.Commands
             Console.WriteLine($"Created At: {workflow.CreatedAt}");
             Console.WriteLine($"HTML URL: {workflow.HtmlURL}");
             Console.WriteLine($"Jobs URL : {workflow.JobsURL}");
-
-
-            WorkflowJob[] jobs = workflow.GetJobs();
-
-            if (jobs == null || jobs.Length == 0)
-            {
-                Console.WriteLine("No Jobs Found for this Workflow");
-                Console.WriteLine("============================================");
-                return;
-            }
-
-            foreach (WorkflowJob job in jobs)
-            {
-                Console.WriteLine($"    ========== Job {job.ID} ==========");
-                Console.WriteLine($"    Job Name: {job.Name}");
-                Console.WriteLine($"    Node ID: {job.NodeID}");
-                Console.WriteLine($"    Status: {job.Status}");
-                Console.WriteLine($"    Steps: {job.Steps.Length}");
-                Console.WriteLine($"    Conclusion: {job.Conclusion}");
-                Console.WriteLine($"    Created At: {job.CreatedAt}");
-                Console.WriteLine($"    Started At: {job.StartedAt}");
-                Console.WriteLine($"    Completed At: {job.CompletedAt}");
-                Console.WriteLine($"    Run Attempt: {job.RunAttempt}");
-                Console.WriteLine($"    Runner Name: {job.RunnerName}");
-                Console.WriteLine($"    HTML URL: {job.HtmlURL}");
-                Console.WriteLine("     =======================================");
-            }
             Console.WriteLine("=============================================");
         }
     }
