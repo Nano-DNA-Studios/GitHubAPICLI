@@ -106,7 +106,6 @@ namespace GitHubAPICLI.Commands
             Console.WriteLine($"Conclusion: {workflow.Conclusion}");
             Console.WriteLine($"Created At: {workflow.CreatedAt}");
             Console.WriteLine($"HTML URL: {workflow.HtmlURL}");
-            Console.WriteLine($"Jobs URL : {workflow.JobsURL}");
             Console.WriteLine("=============================================");
         }
     }
