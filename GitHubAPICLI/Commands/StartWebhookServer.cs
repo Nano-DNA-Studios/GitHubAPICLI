@@ -24,6 +24,8 @@ namespace GitHubAPICLI.Commands
 
         public override void Execute(string[] args)
         {
+            Runners = new Dictionary<string, Runner>();
+
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
 
             if (string.IsNullOrEmpty(settings.GitHubPAT))
@@ -56,11 +58,27 @@ namespace GitHubAPICLI.Commands
 
                 WorkflowRun run = workflowRun.WorkflowRun;
 
-                if (run.Status != "queued")
+                if (!(run.Status == "queued" || run.Status == "completed"))
                 {
                     Console.WriteLine($"Received a WorkflowRunEvent with status: {run.Status}");
                     return;
                 }
+
+                if (run.Status == "completed")
+                {
+                    run.GetLogs();
+
+                    return;
+
+                    //Runner runner = Runners[run.ID];
+                    //
+                    //runner.Stop();
+                    //Runners.Remove(run.ID);
+
+                    
+                }
+                    
+
 
                 Repository repo = Repository.GetRepository(run.Repository.Owner.Login, run.Repository.Name);
 
@@ -71,6 +89,8 @@ namespace GitHubAPICLI.Commands
                 Runner runner = builder.Build();
 
                 runner.Start();
+
+                Runners.Add(run.ID, runner);
 
                 settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
                 settings.SaveSettings();
