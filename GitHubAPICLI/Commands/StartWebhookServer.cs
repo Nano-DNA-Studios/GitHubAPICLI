@@ -46,6 +46,8 @@ namespace GitHubAPICLI.Commands
 
             webhookService.On<WorkflowRunEvent>(workflowRun =>
             {
+                settings = Setting.LoadSettings<GitHubCLISettings>();
+
                 if (workflowRun == null)
                 {
                     Console.WriteLine("Received a null WorkflowRunEvent");
@@ -69,6 +71,9 @@ namespace GitHubAPICLI.Commands
                 Runner runner = builder.Build();
 
                 runner.Start();
+
+                settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
+                settings.SaveSettings();
 
                 runner.StopRunner += (run) =>
                 {
