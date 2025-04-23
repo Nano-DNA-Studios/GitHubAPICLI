@@ -67,7 +67,6 @@ namespace GitHubAPICLI.Commands
                 if (run.Status == "completed")
                 {
                     run.GetLogs();
-
                     return;
 
                     //Runner runner = Runners[run.ID];
