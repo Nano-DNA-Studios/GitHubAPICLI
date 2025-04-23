@@ -75,7 +75,6 @@ namespace GitHubAPICLI.Commands
                 }
 
                 AddRunner(run);
-                
             });
 
             webhookService.StartAsync();
