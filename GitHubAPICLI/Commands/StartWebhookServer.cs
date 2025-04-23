@@ -70,53 +70,90 @@ namespace GitHubAPICLI.Commands
 
                     return;
 
-
-
                     //Runner runner = Runners[run.ID];
                     //
                     //runner.Stop();
                     //Runners.Remove(run.ID);
-
                 }
 
-                Repository repo = Repository.GetRepository(run.Repository.Owner.Login, run.Repository.Name);
-
-                RunnerBuilder builder = new RunnerBuilder($"{run.Repository.Name}-{run.ID}", "mrdnalex/github-action-worker-container-dotnet", repo, true);
-
-                builder.AddLabel($"run-{workflowRun.WorkflowRun.ID}");
-
-                Runner runner = builder.Build();
-
-                runner.Start();
-
-                Runners.Add(run.ID, runner);
-
-                settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
-                settings.SaveSettings();
-
-                runner.StopRunner += (run) =>
-                {
-                    Console.WriteLine(run.Container.GetLogs());
-                    
-                    WorkflowRun[] runs = repo.GetWorkflows();
-                
-                    foreach (WorkflowRun workRun in runs)
-                    {
-                        if (workRun.ID == workflowRun.WorkflowRun.ID)
-                        {
-                            Console.WriteLine($"Workflow Run: {workRun.ID} Status: {workRun.Status}");
-                
-                            workRun.GetLogs();
-                
-                            //WorkflowJob[] jobs = workRun.GetJobs();
-                        }
-                    }
-                };
+                AddRunner(run);
+                //Repository repo = Repository.GetRepository(run.Repository.Owner.Login, run.Repository.Name);
+                //
+                //RunnerBuilder builder = new RunnerBuilder($"{run.Repository.Name}-{run.ID}", "mrdnalex/github-action-worker-container-dotnet", repo, true);
+                //
+                //builder.AddLabel($"run-{workflowRun.WorkflowRun.ID}");
+                //
+                //Runner runner = builder.Build();
+                //
+                //runner.Start();
+                //
+                //Runners.Add(run.ID, runner);
+                //
+                //settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
+                //settings.SaveSettings();
+                //
+                //runner.StopRunner += (run) =>
+                //{
+                //    Console.WriteLine(run.Container.GetLogs());
+                //    
+                //    WorkflowRun[] runs = repo.GetWorkflows();
+                //
+                //    foreach (WorkflowRun workRun in runs)
+                //    {
+                //        if (workRun.ID == workflowRun.WorkflowRun.ID)
+                //        {
+                //            Console.WriteLine($"Workflow Run: {workRun.ID} Status: {workRun.Status}");
+                //
+                //            workRun.GetLogs();
+                //
+                //            //WorkflowJob[] jobs = workRun.GetJobs();
+                //        }
+                //    }
+                //};
             });
 
             webhookService.StartAsync();
 
             while (true) { }
+        }
+
+        private void AddRunner (WorkflowRun workflowRun)
+        {
+            GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+
+            Repository repo = Repository.GetRepository(workflowRun.Repository.Owner.Login, workflowRun.Repository.Name);
+
+            RunnerBuilder builder = new RunnerBuilder($"{workflowRun.Repository.Name}-{workflowRun.ID}", "mrdnalex/github-action-worker-container-dotnet", repo, true);
+
+            builder.AddLabel($"run-{workflowRun.ID}");
+
+            Runner runner = builder.Build();
+
+            runner.Start();
+
+            Runners.Add(workflowRun.ID, runner);
+
+            settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
+            settings.SaveSettings();
+
+            runner.StopRunner += (runnner) =>
+            {
+                Console.WriteLine(runnner.Container.GetLogs());
+
+                WorkflowRun[] runs = repo.GetWorkflows();
+
+                foreach (WorkflowRun workRun in runs)
+                {
+                    if (workRun.ID == workflowRun.ID)
+                    {
+                        Console.WriteLine($"Workflow Run: {workRun.ID} Status: {workRun.Status}");
+
+                        workRun.GetLogs();
+
+                        //WorkflowJob[] jobs = workRun.GetJobs();
+                    }
+                }
+            };
         }
     }
 }
