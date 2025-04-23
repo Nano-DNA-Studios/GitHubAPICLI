@@ -70,6 +70,8 @@ namespace GitHubAPICLI.Commands
 
                     return;
 
+
+
                     //Runner runner = Runners[run.ID];
                     //
                     //runner.Stop();
