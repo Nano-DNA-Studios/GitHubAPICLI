@@ -117,8 +117,6 @@ namespace GitHubAPICLI.Commands
                         Console.WriteLine($"Workflow Run: {workRun.ID} Status: {workRun.Status}");
 
                         workRun.GetLogs();
-
-                        //WorkflowJob[] jobs = workRun.GetJobs();
                     }
                 }
             };
