@@ -77,10 +77,7 @@ namespace GitHubAPICLI.Commands
                     //runner.Stop();
                     //Runners.Remove(run.ID);
 
-                    
                 }
-                    
-
 
                 Repository repo = Repository.GetRepository(run.Repository.Owner.Login, run.Repository.Name);
 
