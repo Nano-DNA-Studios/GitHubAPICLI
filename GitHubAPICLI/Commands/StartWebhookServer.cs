@@ -12,9 +12,7 @@ namespace GitHubAPICLI.Commands
 {
     internal class StartWebhookServer : Command
     {
-        public StartWebhookServer(IDataManager dataManager) : base(dataManager)
-        {
-        }
+        public StartWebhookServer(IDataManager dataManager) : base(dataManager) { }
 
         public override string Name => "startwebhookserver";
 
