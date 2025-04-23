@@ -107,7 +107,7 @@ namespace GitHubAPICLI.Commands
                 {
                     if (workRun.ID == workflowRun.ID)
                     {
-                        Console.WriteLine($"Workflow Run: {workRun.ID} Status: {workRun.Status}");
+                        //Console.WriteLine($"Workflow Run: {workRun.ID} Status: {workRun.Status}");
 
                         workRun.GetLogs();
                     }
