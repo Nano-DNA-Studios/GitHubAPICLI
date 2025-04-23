@@ -77,39 +77,7 @@ namespace GitHubAPICLI.Commands
                 }
 
                 AddRunner(run);
-                //Repository repo = Repository.GetRepository(run.Repository.Owner.Login, run.Repository.Name);
-                //
-                //RunnerBuilder builder = new RunnerBuilder($"{run.Repository.Name}-{run.ID}", "mrdnalex/github-action-worker-container-dotnet", repo, true);
-                //
-                //builder.AddLabel($"run-{workflowRun.WorkflowRun.ID}");
-                //
-                //Runner runner = builder.Build();
-                //
-                //runner.Start();
-                //
-                //Runners.Add(run.ID, runner);
-                //
-                //settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
-                //settings.SaveSettings();
-                //
-                //runner.StopRunner += (run) =>
-                //{
-                //    Console.WriteLine(run.Container.GetLogs());
-                //    
-                //    WorkflowRun[] runs = repo.GetWorkflows();
-                //
-                //    foreach (WorkflowRun workRun in runs)
-                //    {
-                //        if (workRun.ID == workflowRun.WorkflowRun.ID)
-                //        {
-                //            Console.WriteLine($"Workflow Run: {workRun.ID} Status: {workRun.Status}");
-                //
-                //            workRun.GetLogs();
-                //
-                //            //WorkflowJob[] jobs = workRun.GetJobs();
-                //        }
-                //    }
-                //};
+                
             });
 
             webhookService.StartAsync();
