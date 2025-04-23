@@ -93,10 +93,7 @@ namespace GitHubAPICLI.Commands
 
             webhookService.StartAsync();
 
-            while (true)
-            {
-
-            }
+            while (true) { }
         }
     }
 }
