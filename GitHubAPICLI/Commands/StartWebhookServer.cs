@@ -7,6 +7,7 @@ using NanoDNA.GitHubManager.Models;
 using NanoDNA.GitHubManager.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GitHubAPICLI.Commands
 {
@@ -109,7 +110,7 @@ namespace GitHubAPICLI.Commands
                     {
                         //Console.WriteLine($"Workflow Run: {workRun.ID} Status: {workRun.Status}");
 
-                        workRun.GetLogs();
+                        File.WriteAllBytes("C:\\Users\\MrDNA\\Downloads\\CLILogs\\Logs.zip", workRun.GetLogs());
                     }
                 }
             };
