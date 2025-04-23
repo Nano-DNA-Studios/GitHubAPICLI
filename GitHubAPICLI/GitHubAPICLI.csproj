@@ -9,21 +9,19 @@
 		<IsPackable>true</IsPackable>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>githubapi</ToolCommandName>
+		<DocumentationFile>bin\$(Platform)\$(Configuration)\$(TargetFramework)\Documentation\$(RootNamespace).xml</DocumentationFile>
+		<PdbFile>bin\$(Platform)\$(Configuration)\$(TargetFramework)\Documentation\$(RootNamespace).pdb</PdbFile>
 	</PropertyGroup>
 
 	<!-- Add Individual Platforms in NuGet Package -->
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
 		<None Include="..\README.md" Pack="true" PackagePath="" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Include="..\README.md" Pack="true" PackagePath="" />
-		<None Include="bin\x64\Release\net*\$(AssemblyName).exe" Pack="true" PackagePath="runtimes\win-x64\lib" />
+		<None Include="bin\x64\Release\net*\$(AssemblyName).dll" Pack="true" PackagePath="runtimes\win-x64\lib" />
 		<None Include="bin\x64\Release\net*\$(AssemblyName).xml" Pack="true" PackagePath="runtimes\win-x64\lib" />
-		<None Include="bin\x64\Release\net*\NS2_Interop.dll" Pack="true" PackagePath="runtimes\win-x64\native" />
-		<None Include="bin\x86\Release\net*\$(AssemblyName).exe" Pack="true" PackagePath="runtimes\win-x86\lib" />
+		<None Include="bin\x64\Release\net*\$(AssemblyName).pdb" Pack="true" PackagePath="runtimes\win-x64\lib" />
+		<None Include="bin\x86\Release\net*\$(AssemblyName).dll" Pack="true" PackagePath="runtimes\win-x86\lib" />
 		<None Include="bin\x86\Release\net*\$(AssemblyName).xml" Pack="true" PackagePath="runtimes\win-x86\lib" />
-		<None Include="bin\x86\Release\net*\NS2_Interop.dll" Pack="true" PackagePath="runtimes\win-x86\native" />
+		<None Include="bin\x86\Release\net*\$(AssemblyName).pdb" Pack="true" PackagePath="runtimes\win-x86\lib" />
 	</ItemGroup>
 
 	<!-- Development Project References -->
@@ -37,5 +35,5 @@
 		<PackageReference Include="NanoDNA.CLIFramework" Version="0.1.1" Condition="'$(Configuration)' == 'Release'" />
 		<PackageReference Include="NanoDNA.GitHubManager" Version="0.1.0" Condition="'$(Configuration)' == 'Release'" />
 	</ItemGroup>
-	
+
 </Project>
