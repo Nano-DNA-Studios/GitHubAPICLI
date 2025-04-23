@@ -58,7 +58,7 @@ namespace GitHubAPICLI.Commands
 
                 if (!(run.Status == "queued" || run.Status == "completed"))
                 {
-                    //Console.WriteLine($"Received a WorkflowRunEvent with status: {run.Status}");
+                    Console.WriteLine($"Received a WorkflowRunEvent with status: {run.Status}");
                     return;
                 }
 
