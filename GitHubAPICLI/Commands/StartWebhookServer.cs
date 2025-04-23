@@ -101,8 +101,6 @@ namespace GitHubAPICLI.Commands
 
             runner.StopRunner += (runnner) =>
             {
-                //Console.WriteLine(runnner.Container.GetLogs());
-
                 WorkflowRun[] runs = repo.GetWorkflows();
 
                 foreach (WorkflowRun workRun in runs)
