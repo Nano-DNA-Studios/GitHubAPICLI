@@ -84,7 +84,7 @@ namespace GitHubAPICLI.Commands
 
                 Repository repo = Repository.GetRepository(run.Repository.Owner.Login, run.Repository.Name);
 
-                RunnerBuilder builder = new RunnerBuilder($"{run.Repository.Name}-{run.ID}", "mrdnalex/github-action-worker-container-dotnet", repo, true);
+                RunnerBuilder builder = new RunnerBuilder($"{run.Repository.Name}-{run.ID}", "mrdnalex/github-action-worker-container-dotnet", repo, false);
 
                 builder.AddLabel($"run-{workflowRun.WorkflowRun.ID}");
 
@@ -97,25 +97,25 @@ namespace GitHubAPICLI.Commands
                 settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
                 settings.SaveSettings();
 
-                runner.StopRunner += (run) =>
-                {
-                    Console.WriteLine(run.Container.GetLogs());
-
-                    WorkflowRun[] runs = repo.GetWorkflows();
-
-                    foreach (WorkflowRun workRun in runs)
-                    {
-                        if (workRun.ID == workflowRun.WorkflowRun.ID)
-                        {
-                            Console.WriteLine($"Workflow Run: {workRun.ID} Status: {workRun.Status}");
-
-                            workRun.GetLogs();
-
-                            WorkflowJob[] jobs = workRun.GetJobs();
-
-                        }
-                    }
-                };
+                //runner.StopRunner += (run) =>
+                //{
+                //    Console.WriteLine(run.Container.GetLogs());
+                //
+                //    WorkflowRun[] runs = repo.GetWorkflows();
+                //
+                //    foreach (WorkflowRun workRun in runs)
+                //    {
+                //        if (workRun.ID == workflowRun.WorkflowRun.ID)
+                //        {
+                //            Console.WriteLine($"Workflow Run: {workRun.ID} Status: {workRun.Status}");
+                //
+                //            workRun.GetLogs();
+                //
+                //            WorkflowJob[] jobs = workRun.GetJobs();
+                //
+                //        }
+                //    }
+                //};
             });
 
             webhookService.StartAsync();
