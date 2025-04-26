@@ -57,21 +57,22 @@ namespace GitHubAPICLI.Commands
 
                 WorkflowRun run = workflowRun.WorkflowRun;
 
-                if (!(run.Status == "queued" || run.Status == "completed"))
+                if (run.Status != "queued")
+                //if (!(run.Status == "queued" || run.Status == "completed"))
                 {
                     Console.WriteLine($"Received a WorkflowRunEvent with status: {run.Status}");
                     return;
                 }
 
-                if (run.Status == "completed")
-                {
-                    run.GetLogs();
-                    return;
-
-                    //Runner runner = Runners[run.ID];
-                    //runner.Stop();
-                    //Runners.Remove(run.ID);
-                }
+                //if (run.Status == "completed")
+                //{
+                //    run.GetLogs();
+                //    return;
+                //
+                //    //Runner runner = Runners[run.ID];
+                //    //runner.Stop();
+                //    //Runners.Remove(run.ID);
+                //}
 
                 AddRunner(run);
             });
@@ -81,6 +82,10 @@ namespace GitHubAPICLI.Commands
             while (true) { }
         }
 
+        /// <summary>
+        /// Adds and Registers a Runner to the Repository requesting a new Workflow Run
+        /// </summary>
+        /// <param name="workflowRun">Workflow Run Instance</param>
         private void AddRunner (WorkflowRun workflowRun)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
@@ -107,11 +112,7 @@ namespace GitHubAPICLI.Commands
                 foreach (WorkflowRun workRun in runs)
                 {
                     if (workRun.ID == workflowRun.ID)
-                    {
-                        //Console.WriteLine($"Workflow Run: {workRun.ID} Status: {workRun.Status}");
-
                         File.WriteAllBytes("C:\\Users\\MrDNA\\Downloads\\CLILogs\\Logs.zip", workRun.GetLogs());
-                    }
                 }
             };
         }
