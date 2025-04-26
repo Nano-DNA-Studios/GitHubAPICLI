@@ -16,6 +16,8 @@ namespace GitHubAPICLI.Commands
     {
         public StartWebhookServer(IDataManager dataManager) : base(dataManager) { }
 
+        public object threadLock = new object();
+
         public override string Name => "startwebhookserver";
 
         public override string Description => "Starts a Webhook Server for receiving Webhooks from GitHub API related to Action Workflows";
@@ -121,7 +123,9 @@ namespace GitHubAPICLI.Commands
             else
             {
                 settings.AddActionWorkerConfig(new ActionWorkerConfig(repo.Owner.Login, repo.Name, defaultDockerImage));
-                settings.SaveSettings();
+
+                lock (threadLock)
+                    settings.SaveSettings();
 
                 Console.WriteLine($"Registering a new Repo Config");
             }
@@ -138,7 +142,9 @@ namespace GitHubAPICLI.Commands
             Runners.Add(workflowRun.ID, runner);
 
             settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
-            settings.SaveSettings();
+
+            lock (threadLock)
+                settings.SaveSettings();
 
             runner.StopRunner += (runnner) =>
             {
@@ -151,7 +157,9 @@ namespace GitHubAPICLI.Commands
                 }
 
                 settings.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
-                settings.SaveSettings();
+                
+                lock (threadLock)
+                    settings.SaveSettings();
             };
         }
     }
