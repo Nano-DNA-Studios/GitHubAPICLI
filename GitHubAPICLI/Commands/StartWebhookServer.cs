@@ -35,13 +35,20 @@ namespace GitHubAPICLI.Commands
 
             GitHubAPIClient.SetGitHubPAT(settings.GitHubPAT);
 
-            if (args.Length != 1)
+            if (args.Length != 3)
             {
-                Console.WriteLine("Invalid Number of Arguments Provided, only the Webhook Server Port can be provided");
+                Console.WriteLine("Invalid Number of Arguments Provided, the Webhook Secret, Default Docker Image and Port Number for the Server must be specified");
                 return;
             }
 
             string webhookSecret = args[0];
+            string defaultDockerImage = args[1];
+
+            if (!int.TryParse(args[2], out int port))
+            {
+                Console.WriteLine("Invalid Port Number Provided");
+                return;
+            }
 
             GitHubWebhookService webhookService = new GitHubWebhookService(webhookSecret);
 
@@ -77,7 +84,7 @@ namespace GitHubAPICLI.Commands
                 AddRunner(run);
             });
 
-            webhookService.StartAsync();
+            webhookService.StartAsync(port);
 
             while (true) { }
         }
