@@ -8,6 +8,7 @@ using NanoDNA.GitHubManager.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace GitHubAPICLI.Commands
 {
@@ -102,13 +103,31 @@ namespace GitHubAPICLI.Commands
         /// Adds and Registers a Runner to the Repository requesting a new Workflow Run
         /// </summary>
         /// <param name="workflowRun">Workflow Run Instance</param>
-        private void AddRunner (WorkflowRun workflowRun)
+        private void AddRunner(WorkflowRun workflowRun)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
 
             Repository repo = Repository.GetRepository(workflowRun.Repository.Owner.Login, workflowRun.Repository.Name);
 
-            RunnerBuilder builder = new RunnerBuilder($"{workflowRun.Repository.Name}-{workflowRun.ID}", settings.DefaultDockerImage, repo, true);
+            string defaultDockerImage = settings.DefaultDockerImage;
+
+            ActionWorkerConfig config = settings.ActionWorkerConfigs.First((config) => config.RepoName == repo.Name);
+
+            if (config != null)
+            {
+                defaultDockerImage = config.ContainerImage;
+                Console.WriteLine($"Repo has already been configured");
+            }
+            else
+            {
+                settings.AddActionWorkerConfig(new ActionWorkerConfig(repo.Owner.Login, repo.Name, defaultDockerImage));
+                settings.SaveSettings();
+
+                Console.WriteLine($"Registering a new Repo Config");
+            }
+                
+
+            RunnerBuilder builder = new RunnerBuilder($"{workflowRun.Repository.Name}-{workflowRun.ID}", defaultDockerImage, repo, true);
 
             builder.AddLabel($"run-{workflowRun.ID}");
 
@@ -128,8 +147,11 @@ namespace GitHubAPICLI.Commands
                 foreach (WorkflowRun workRun in runs)
                 {
                     if (workRun.ID == workflowRun.ID)
-                        File.WriteAllBytes("C:\\Users\\MrDNA\\Downloads\\CLILogs\\Logs.zip", workRun.GetLogs());
+                        File.WriteAllBytes($"C:\\Users\\MrDNA\\Downloads\\CLILogs\\Logs-{runner.ID}.zip", workRun.GetLogs());
                 }
+
+                settings.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
+                settings.SaveSettings();
             };
         }
     }
