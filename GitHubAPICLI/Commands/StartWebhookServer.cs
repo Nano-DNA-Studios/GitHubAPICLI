@@ -77,21 +77,10 @@ namespace GitHubAPICLI.Commands
                 WorkflowRun run = workflowRun.WorkflowRun;
 
                 if (run.Status != "queued")
-                //if (!(run.Status == "queued" || run.Status == "completed"))
                 {
                     Console.WriteLine($"Received a WorkflowRunEvent with status: {run.Status}");
                     return;
                 }
-
-                //if (run.Status == "completed")
-                //{
-                //    run.GetLogs();
-                //    return;
-                //
-                //    //Runner runner = Runners[run.ID];
-                //    //runner.Stop();
-                //    //Runners.Remove(run.ID);
-                //}
 
                 AddRunner(run);
             });
@@ -116,21 +105,15 @@ namespace GitHubAPICLI.Commands
             ActionWorkerConfig config = settings.ActionWorkerConfigs.FirstOrDefault((config) => config.RepoName == repo.Name);
 
             if (config != null)
-            {
                 defaultDockerImage = config.ContainerImage;
-                Console.WriteLine($"Repo has already been configured");
-            }
             else
             {
                 settings.AddActionWorkerConfig(new ActionWorkerConfig(repo.Owner.Login, repo.Name, defaultDockerImage));
 
                 lock (threadLock)
                     settings.SaveSettings();
-
-                Console.WriteLine($"Registering a new Repo Config");
             }
                 
-
             RunnerBuilder builder = new RunnerBuilder($"{workflowRun.Repository.Name}-{workflowRun.ID}", defaultDockerImage, repo, true);
 
             builder.AddLabel($"run-{workflowRun.ID}");
