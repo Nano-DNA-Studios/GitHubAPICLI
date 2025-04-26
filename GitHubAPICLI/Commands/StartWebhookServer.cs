@@ -35,22 +35,31 @@ namespace GitHubAPICLI.Commands
 
             GitHubAPIClient.SetGitHubPAT(settings.GitHubPAT);
 
-            if (args.Length != 3)
+            if (args.Length != 0)
             {
-                Console.WriteLine("Invalid Number of Arguments Provided, the Webhook Secret, Default Docker Image and Port Number for the Server must be specified");
+                Console.WriteLine("Invalid Number of Arguments Provided, No arguments should be provided. Webhook Server should be registered through \"registerwebhookserver\" Command");
                 return;
             }
 
-            string webhookSecret = args[0];
-            string defaultDockerImage = args[1];
-
-            if (!int.TryParse(args[2], out int port))
+            if (settings.WebhookSecret == null || settings.WebhookSecret == string.Empty)
             {
-                Console.WriteLine("Invalid Port Number Provided");
+                Console.WriteLine("Webhook Secret is not set. Please register it using the 'registerwebhookserver' command.");
                 return;
             }
 
-            GitHubWebhookService webhookService = new GitHubWebhookService(webhookSecret);
+            if (settings.DefaultDockerImage == null || settings.DefaultDockerImage == string.Empty)
+            {
+                Console.WriteLine("Default Docker Image is not set. Please register it using the 'registerwebhookserver' command.");
+                return;
+            }
+
+            if (settings.WebhookServerPort == 0)
+            {
+                Console.WriteLine("Webhook Server Port is not set. Please register it using the 'registerwebhookserver' command.");
+                return;
+            }
+
+            GitHubWebhookService webhookService = new GitHubWebhookService(settings.WebhookSecret);
 
             webhookService.On<WorkflowRunEvent>(workflowRun =>
             {
@@ -84,7 +93,7 @@ namespace GitHubAPICLI.Commands
                 AddRunner(run);
             });
 
-            webhookService.StartAsync(port);
+            webhookService.StartAsync(settings.WebhookServerPort);
 
             while (true) { }
         }
@@ -99,7 +108,7 @@ namespace GitHubAPICLI.Commands
 
             Repository repo = Repository.GetRepository(workflowRun.Repository.Owner.Login, workflowRun.Repository.Name);
 
-            RunnerBuilder builder = new RunnerBuilder($"{workflowRun.Repository.Name}-{workflowRun.ID}", "mrdnalex/github-action-worker-container-dotnet", repo, true);
+            RunnerBuilder builder = new RunnerBuilder($"{workflowRun.Repository.Name}-{workflowRun.ID}", settings.DefaultDockerImage, repo, true);
 
             builder.AddLabel($"run-{workflowRun.ID}");
 

@@ -20,9 +20,29 @@ namespace GitHubAPICLI.Application
         /// <inheritdoc/>
         public override string GlobalShorthandFlagPrefix => DEFAULT_GLOBAL_SHORTHAND_FLAG_PREFIX;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// The GitHub Personal Access Token (PAT) used for authentication with the GitHub API.
+        /// </summary>
         [JsonProperty("GitHubPAT")]
         public string GitHubPAT { get; private set; }
+
+        /// <summary>
+        /// The Webhook Secret used for the Webhook Server to Authenticate with GitHub
+        /// <summary>
+        [JsonProperty("WebhookSecret")]
+        public string WebhookSecret { get; private set; }
+
+        /// <summary>
+        /// The Default Docker Image used for the Action Workers of new Unregistered Repositories received through the Webhook Server
+        /// </summary>
+        [JsonProperty("DefaultDockerImage")]
+        public string DefaultDockerImage { get; private set; }
+
+        /// <summary>
+        /// The Webhook Server Port used for the Webhook Server to receive Webhooks from GitHub
+        /// </summary>
+        [JsonProperty("WebhookServerPort")]
+        public int WebhookServerPort { get; private set; }
 
         /// <summary>
         /// List of Active Runners Registered by the Application
@@ -43,6 +63,33 @@ namespace GitHubAPICLI.Application
         public void SetGitHubPAT(string pat)
         {
             GitHubPAT = pat;
+        }
+
+        /// <summary>
+        /// Sets the Webhook Secret for the Webhook Server to Authenticate with GitHub
+        /// </summary>
+        /// <param name="secret">Webhook Secret</param>
+        public void SetWebhookSecret(string secret)
+        {
+            WebhookSecret = secret;
+        }
+
+        /// <summary>
+        /// Sets the Default Docker Image for the Action Workers of new Unregistered Repositories received through the Webhook Server
+        /// </summary>
+        /// <param name="image">Docker Image Name</param>
+        public void SetDefaultDockerImage(string image)
+        {
+            DefaultDockerImage = image;
+        }
+
+        /// <summary>
+        /// Sets the Webhook Server Port for the Webhook Server to receive Webhooks from GitHub
+        /// </summary>
+        /// <param name="port">Webhook Server to Start on</param>
+        public void SetWebhookServerPort(int port)
+        {
+            WebhookServerPort = port;
         }
 
         /// <summary>
