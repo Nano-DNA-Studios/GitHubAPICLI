@@ -113,7 +113,7 @@ namespace GitHubAPICLI.Commands
 
             string defaultDockerImage = settings.DefaultDockerImage;
 
-            ActionWorkerConfig config = settings.ActionWorkerConfigs.First((config) => config.RepoName == repo.Name);
+            ActionWorkerConfig config = settings.ActionWorkerConfigs.FirstOrDefault((config) => config.RepoName == repo.Name);
 
             if (config != null)
             {
