@@ -11,10 +11,13 @@ namespace GitHubAPICLI.Commands
     {
         public FillWorkflows(IDataManager dataManager) : base(dataManager) { }
 
+        /// <inheritdoc/>
         public override string Name => "fillworkflows";
 
+        /// <inheritdoc/>
         public override string Description => "Fills in all Pending Workflow Jobs by Spawning a GitHub Action Worker for them";
 
+        /// <inheritdoc/>
         public override void Execute(string[] args)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
@@ -86,7 +89,7 @@ namespace GitHubAPICLI.Commands
 
             foreach (WorkflowRun workflow in workflows)
             {
-                if (workflow.Status != "queued") //Add a Dictionary or some kind of Enum with a Converter to string for it
+                if (workflow.Status != "queued")
                     continue;
 
                 RunnerBuilder builder = new RunnerBuilder($"{repo.Name}-{workflow.ID}", "mrdnalex/github-action-worker-container-dotnet", repo, false);

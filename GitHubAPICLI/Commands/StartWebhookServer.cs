@@ -6,28 +6,36 @@ using NanoDNA.GitHubManager.Events;
 using NanoDNA.GitHubManager.Models;
 using NanoDNA.GitHubManager.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace GitHubAPICLI.Commands
 {
+    /// <summary>
+    /// Starts a Thread Blocking Webhooks Server for GitHub API Action Workflows
+    /// </summary>
     internal class StartWebhookServer : Command
     {
+        /// <summary>
+        /// Initializes a new Command Instanc of <see cref="StartWebhookServer"/>
+        /// </summary>
+        /// <param name="dataManager"></param>
         public StartWebhookServer(IDataManager dataManager) : base(dataManager) { }
 
+        /// <summary>
+        /// Thread Lock Object for Thread Safety when Saving Settings
+        /// </summary>
         public object threadLock = new object();
 
+        /// <inheritdoc/>
         public override string Name => "startwebhookserver";
 
+        /// <inheritdoc/>
         public override string Description => "Starts a Webhook Server for receiving Webhooks from GitHub API related to Action Workflows";
 
-        public Dictionary<string, Runner> Runners { get; set; }
-
+        /// <inheritdoc/>
         public override void Execute(string[] args)
         {
-            Runners = new Dictionary<string, Runner>();
-
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
 
             if (string.IsNullOrEmpty(settings.GitHubPAT))
@@ -112,8 +120,6 @@ namespace GitHubAPICLI.Commands
             Runner runner = builder.Build();
 
             runner.Start();
-
-            Runners.Add(workflowRun.ID, runner);
 
             settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
 

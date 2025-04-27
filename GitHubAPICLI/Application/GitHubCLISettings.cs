@@ -28,7 +28,7 @@ namespace GitHubAPICLI.Application
 
         /// <summary>
         /// The Webhook Secret used for the Webhook Server to Authenticate with GitHub
-        /// <summary>
+        /// </summary>
         [JsonProperty("WebhookSecret")]
         public string WebhookSecret { get; private set; }
 

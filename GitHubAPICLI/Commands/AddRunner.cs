@@ -7,14 +7,24 @@ using System;
 
 namespace GitHubAPICLI.Commands
 {
+    /// <summary>
+    /// Adds a Runner to a Specified Repository with a Custom Name and Docker Image
+    /// </summary>
     internal class AddRunner : Command
     {
+        /// <summary>
+        /// Initializes a new Command Instance of <see cref="AddRunner"/>
+        /// </summary>
+        /// <param name="dataManager">DataManager containing context for the Command</param>
         public AddRunner(IDataManager dataManager) : base(dataManager) { }
 
+        /// <inheritdoc/>
         public override string Name => "addrunner";
 
+        /// <inheritdoc/>
         public override string Description => "Adds a GitHub Action Runner to a Repository";
 
+        /// <inheritdoc/>
         public override void Execute(string[] args)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
