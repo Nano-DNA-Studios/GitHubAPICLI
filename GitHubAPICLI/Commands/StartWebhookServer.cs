@@ -62,6 +62,12 @@ namespace GitHubAPICLI.Commands
                 return;
             }
 
+            if (!Directory.Exists(settings.LogsOutput))
+            {
+                Console.WriteLine("Invalid Directory Provided for the Logs Output, Directory does not exist, Please register a Valid Directory using the 'registerwebhookserver' command.");
+                return;
+            }
+
             GitHubWebhookService webhookService = new GitHubWebhookService(settings.WebhookSecret);
 
             webhookService.On<WorkflowRunEvent>(workflowRun =>
@@ -77,10 +83,7 @@ namespace GitHubAPICLI.Commands
                 WorkflowRun run = workflowRun.WorkflowRun;
 
                 if (run.Status != "queued")
-                {
-                    Console.WriteLine($"Received a WorkflowRunEvent with status: {run.Status}");
                     return;
-                }
 
                 AddRunner(run);
             });
@@ -122,7 +125,7 @@ namespace GitHubAPICLI.Commands
                 foreach (WorkflowRun workRun in runs)
                 {
                     if (workRun.ID == workflowRun.ID)
-                        File.WriteAllBytes($"C:\\Users\\MrDNA\\Downloads\\CLILogs\\Logs-{runner.ID}.zip", workRun.GetLogs());
+                        File.WriteAllBytes($"{settings.LogsOutput}\\Logs-{workflowRun.ID}.zip", workRun.GetLogs());
                 }
 
                 settings.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));

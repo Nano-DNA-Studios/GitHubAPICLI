@@ -57,6 +57,12 @@ namespace GitHubAPICLI.Application
         public List<ActionWorkerConfig> ActionWorkerConfigs { get; private set; } = new List<ActionWorkerConfig>();
 
         /// <summary>
+        /// The Output Directory for the Logs of the Webhook Runners
+        /// </summary>
+        [JsonProperty("LogsOutput")]
+        public string LogsOutput { get; private set; }
+
+        /// <summary>
         /// Sets the GitHub Personal Access Token (PAT) for the application.
         /// </summary>
         /// <param name="pat">GitHub PAT</param>
@@ -90,6 +96,15 @@ namespace GitHubAPICLI.Application
         public void SetWebhookServerPort(int port)
         {
             WebhookServerPort = port;
+        }
+
+        /// <summary>
+        /// Sets the Output Directory for the Logs of the Webhook Runners
+        /// </summary>
+        /// <param name="output">Output Directory</param>
+        public void SetLogsOutput(string output)
+        {
+            LogsOutput = output;
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using NanoDNA.CLIFramework.Commands;
 using NanoDNA.CLIFramework.Data;
 using System;
+using System.IO;
 
 namespace GitHubAPICLI.Commands
 {
@@ -25,9 +26,9 @@ namespace GitHubAPICLI.Commands
                 return;
             }
 
-            if (args.Length != 3)
+            if (args.Length != 4)
             {
-                Console.WriteLine("Invalid Number of Arguments Provided, the Webhook Secret, Default Docker Image and Port Number for the Server must be specified");
+                Console.WriteLine("Invalid Number of Arguments Provided, the Webhook Secret, Default Docker Image, Port Number and the Logs Output for the Server must be specified");
                 return;
             }
 
@@ -35,6 +36,7 @@ namespace GitHubAPICLI.Commands
 
             string webhookSecret = args[0];
             string defaultDockerImage = args[1];
+            string logsOutput = args[3];
 
             if (!int.TryParse(args[2], out int port))
             {
@@ -42,9 +44,16 @@ namespace GitHubAPICLI.Commands
                 return;
             }
 
+            if (!Directory.Exists(logsOutput))
+            {
+                Console.WriteLine("Invalid Directory Provided for the Logs Output, Directory does not exist");
+                return;
+            }
+
             settings.SetWebhookSecret(webhookSecret);
             settings.SetDefaultDockerImage(defaultDockerImage);
             settings.SetWebhookServerPort(port);
+            settings.SetLogsOutput(logsOutput);
             settings.SaveSettings();
 
             Console.WriteLine("Webhook Server Settings have been Set!");
