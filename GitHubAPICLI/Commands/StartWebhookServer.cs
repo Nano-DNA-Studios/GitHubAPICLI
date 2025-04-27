@@ -125,7 +125,7 @@ namespace GitHubAPICLI.Commands
                 foreach (WorkflowRun workRun in runs)
                 {
                     if (workRun.ID == workflowRun.ID)
-                        File.WriteAllBytes($"{settings.LogsOutput}\\Logs-{workflowRun.ID}.zip", workRun.GetLogs());
+                        File.WriteAllBytes($"{settings.LogsOutput}\\{repo.Name}-{workRun.Name}-{workRun.DisplayTitle}-Logs-{workRun.ID}.zip", workRun.GetLogs());
                 }
 
                 settings.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
