@@ -100,21 +100,7 @@ namespace GitHubAPICLI.Commands
 
             Repository repo = Repository.GetRepository(workflowRun.Repository.Owner.Login, workflowRun.Repository.Name);
 
-            string defaultDockerImage = settings.DefaultDockerImage;
-
-            ActionWorkerConfig config = settings.ActionWorkerConfigs.FirstOrDefault((config) => config.RepoName == repo.Name);
-
-            if (config != null)
-                defaultDockerImage = config.ContainerImage;
-            else
-            {
-                settings.AddActionWorkerConfig(new ActionWorkerConfig(repo.Owner.Login, repo.Name, defaultDockerImage));
-
-                lock (threadLock)
-                    settings.SaveSettings();
-            }
-                
-            RunnerBuilder builder = new RunnerBuilder($"{workflowRun.Repository.Name}-{workflowRun.ID}", defaultDockerImage, repo, true);
+            RunnerBuilder builder = new RunnerBuilder($"{workflowRun.Repository.Name}-{workflowRun.ID}", GetDockerImage(repo), repo, true);
 
             builder.AddLabel($"run-{workflowRun.ID}");
 
@@ -144,6 +130,32 @@ namespace GitHubAPICLI.Commands
                 lock (threadLock)
                     settings.SaveSettings();
             };
+        }
+
+        /// <summary>
+        /// Gets the Docker Image to use for the Runner. If a configuration is not found, it returns the Default Docker Image
+        /// </summary>
+        /// <param name="repo">Repository that is receiving a runner</param>
+        /// <returns>The Docker Image to use</returns>
+        private string GetDockerImage (Repository repo)
+        {
+            GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+
+            string defaultDockerImage = settings.DefaultDockerImage;
+
+            ActionWorkerConfig config = settings.ActionWorkerConfigs.FirstOrDefault((config) => config.RepoName == repo.Name);
+
+            if (config != null)
+                defaultDockerImage = config.ContainerImage;
+            else
+            {
+                settings.AddActionWorkerConfig(new ActionWorkerConfig(repo.Owner.Login, repo.Name, defaultDockerImage));
+
+                lock (threadLock)
+                    settings.SaveSettings();
+            }
+
+            return defaultDockerImage;
         }
     }
 }
