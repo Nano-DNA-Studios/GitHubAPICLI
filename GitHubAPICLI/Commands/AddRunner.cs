@@ -48,6 +48,8 @@ namespace GitHubAPICLI.Commands
 
             RunnerBuilder runnerBuilder = new RunnerBuilder(runnerName, runnerImage, repo, false);
 
+            runnerBuilder.AddLabel("API-CLI-Runner");
+
             Runner runner = runnerBuilder.Build();
 
             runner.Start();
