@@ -83,7 +83,7 @@ namespace GitHubAPICLI.Commands
 
                 WorkflowRun run = workflowRun.WorkflowRun;
 
-                if (run.Status != "completed")
+                if (run.Status == "completed")
                     SaveLogs(run.Repository, run);
 
                 if (run.Status != "queued")
