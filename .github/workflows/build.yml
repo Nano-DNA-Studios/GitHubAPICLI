@@ -74,7 +74,7 @@ jobs:
 
       - name: Login to Docker Registry
         shell: bash
-        run: echo $GITHUB_TOKEN | docker login ghcr.io -u MrDNAlex --password-stdin
+        run: echo "$GITHUB_TOKEN" | docker login ghcr.io -u MrDNAlex --password-stdin
       
       - name: Push to Docker Registry
         shell: bash
