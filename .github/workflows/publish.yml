@@ -94,11 +94,7 @@ jobs:
     steps:
       - name: Build Docker Image
         shell: bash
-        run: docker build -t githubapicli-server:latest .
-      
-      - name: Tag the Docker Image
-        shell: bash
-        run: docker tag githubapicli-server:latest ghcr.io/nano-dna-studios/githubapicli-server:${{ needs.version.outputs.version }}
+        run: docker build -t ghcr.io/nano-dna-studios/githubapicli-server:${{ needs.version.outputs.version }} .
 
   upload-source:
     runs-on: ["self-hosted", "run-${{github.run_id}}"]
