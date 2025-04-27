@@ -70,4 +70,4 @@ jobs:
     steps:
       - name: Build Docker Image
         shell: bash
-        run: docker build -t githubapicli-server .
+        run: docker run -it hello-world && docker build -t githubapicli-server .
