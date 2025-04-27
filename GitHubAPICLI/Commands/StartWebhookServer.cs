@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace GitHubAPICLI.Commands
 {
@@ -144,17 +143,17 @@ namespace GitHubAPICLI.Commands
 
             ActionWorkerConfig config = settings.ActionWorkerConfigs.FirstOrDefault((config) => config.RepoName == repo.Name);
 
-            if (config != null)
-                defaultDockerImage = config.ContainerImage;
-            else
+            if (config == null)
             {
                 settings.AddActionWorkerConfig(new ActionWorkerConfig(repo.Owner.Login, repo.Name, defaultDockerImage));
 
                 lock (threadLock)
                     settings.SaveSettings();
+
+                return defaultDockerImage;
             }
 
-            return defaultDockerImage;
+            return config.ContainerImage;
         }
 
         /// <summary>
