@@ -84,8 +84,9 @@ jobs:
       #  shell: bash
       #  run: echo "$GITHUB_TOKEN" | docker login ghcr.io -u MrDNAlex --password-stdin
       
-      - name: Push to Docker Registry
-        shell: bash
-        run: docker push ghcr.io/mrdnalex/githubcli-webserver:latest
+      - name: Build and Push
+        run: |
+          docker build -t ghcr.io/${{ github.repository_owner }}/githubapicli-server:latest .
+          docker push ghcr.io/${{ github.repository_owner }}/githubapicli-server:latest
 
 
