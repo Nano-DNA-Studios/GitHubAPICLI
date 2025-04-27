@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace GitHubAPICLI.Commands
 {
@@ -82,6 +83,9 @@ namespace GitHubAPICLI.Commands
 
                 WorkflowRun run = workflowRun.WorkflowRun;
 
+                if (run.Status != "completed")
+                    SaveLogs(run.Repository, run);
+
                 if (run.Status != "queued")
                     return;
 
@@ -120,21 +124,8 @@ namespace GitHubAPICLI.Commands
 
             runner.StopRunner += (runnner) =>
             {
-                WorkflowRun[] runs = repo.GetWorkflows();
-
-                string repoDirectory = $"{settings.LogsOutput}\\{repo.Name}";
-
-                if (!Directory.Exists(repoDirectory))
-                    Directory.CreateDirectory(repoDirectory);
-
-                foreach (WorkflowRun workRun in runs)
-                {
-                    if (workRun.ID == workflowRun.ID)
-                        File.WriteAllBytes($"{repoDirectory}\\{repo.Name}-{workRun.ID}-Logs.zip", workRun.GetLogs());
-                }
-
                 settings.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
-                
+
                 lock (threadLock)
                     settings.SaveSettings();
             };
@@ -145,7 +136,7 @@ namespace GitHubAPICLI.Commands
         /// </summary>
         /// <param name="repo">Repository that is receiving a runner</param>
         /// <returns>The Docker Image to use</returns>
-        private string GetDockerImage (Repository repo)
+        private string GetDockerImage(Repository repo)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
 
@@ -166,5 +157,26 @@ namespace GitHubAPICLI.Commands
             return defaultDockerImage;
         }
 
+        /// <summary>
+        /// Saves the Workflow Logs of the Workflow Run to the Logs Output Directory
+        /// </summary>
+        /// <param name="repo">Repository the Workflow Belongs to</param>
+        /// <param name="workflowRun"></param>
+        private void SaveLogs(Repository repo, WorkflowRun workflowRun)
+        {
+            GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+
+            WorkflowRun workRun = repo.GetWorkflows().FirstOrDefault((run) => run.ID == workflowRun.ID);
+
+            if (workRun == null)
+                return;
+
+            string repoDirectory = $"{settings.LogsOutput}\\{repo.Name}";
+
+            if (!Directory.Exists(repoDirectory))
+                Directory.CreateDirectory(repoDirectory);
+
+            File.WriteAllBytes($"{repoDirectory}\\{repo.Name}-{workRun.ID}-Logs.zip", workRun.GetLogs());
+        }
     }
 }
