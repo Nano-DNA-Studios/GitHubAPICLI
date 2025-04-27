@@ -16,10 +16,10 @@
 	<!-- Add Individual Platforms in NuGet Package -->
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
 		<None Include="..\README.md" Pack="true" PackagePath="" />
-		<None Include="bin\x64\Release\net*\$(AssemblyName).dll" Pack="true" PackagePath="runtimes\win-x64\lib" />
+		<None Include="bin\x64\Release\net*\$(AssemblyName).exe" Pack="true" PackagePath="runtimes\win-x64\lib" />
 		<None Include="bin\x64\Release\net*\$(AssemblyName).xml" Pack="true" PackagePath="runtimes\win-x64\lib" />
 		<None Include="bin\x64\Release\net*\$(AssemblyName).pdb" Pack="true" PackagePath="runtimes\win-x64\lib" />
-		<None Include="bin\x86\Release\net*\$(AssemblyName).dll" Pack="true" PackagePath="runtimes\win-x86\lib" />
+		<None Include="bin\x86\Release\net*\$(AssemblyName).exe" Pack="true" PackagePath="runtimes\win-x86\lib" />
 		<None Include="bin\x86\Release\net*\$(AssemblyName).xml" Pack="true" PackagePath="runtimes\win-x86\lib" />
 		<None Include="bin\x86\Release\net*\$(AssemblyName).pdb" Pack="true" PackagePath="runtimes\win-x86\lib" />
 	</ItemGroup>
