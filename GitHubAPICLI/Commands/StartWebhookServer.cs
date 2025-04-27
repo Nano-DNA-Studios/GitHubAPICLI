@@ -158,7 +158,7 @@ namespace GitHubAPICLI.Commands
         /// Saves the Workflow Logs of the Workflow Run to the Logs Output Directory
         /// </summary>
         /// <param name="repo">Repository the Workflow Belongs to</param>
-        /// <param name="workflowRun"></param>
+        /// <param name="workflowRun">Workflow Run that is having it's Logs saved</param>
         private void SaveLogs(Repository repo, WorkflowRun workflowRun)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
