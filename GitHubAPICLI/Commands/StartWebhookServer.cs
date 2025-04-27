@@ -122,10 +122,15 @@ namespace GitHubAPICLI.Commands
             {
                 WorkflowRun[] runs = repo.GetWorkflows();
 
+                string repoDirectory = $"{settings.LogsOutput}\\{repo.Name}";
+
+                if (!Directory.Exists(repoDirectory))
+                    Directory.CreateDirectory(repoDirectory);
+
                 foreach (WorkflowRun workRun in runs)
                 {
                     if (workRun.ID == workflowRun.ID)
-                        File.WriteAllBytes($"{settings.LogsOutput}\\{repo.Name}-{workRun.Name}-{workRun.DisplayTitle}-Logs-{workRun.ID}.zip", workRun.GetLogs());
+                        File.WriteAllBytes($"{repoDirectory}\\{repo.Name}-{workRun.ID}-Logs.zip", workRun.GetLogs());
                 }
 
                 settings.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
@@ -160,5 +165,6 @@ namespace GitHubAPICLI.Commands
 
             return defaultDockerImage;
         }
+
     }
 }
