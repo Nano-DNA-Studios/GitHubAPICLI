@@ -70,4 +70,14 @@ jobs:
     steps:
       - name: Build Docker Image
         shell: bash
-        run: docker build -t mrdnalex/githubcli-webserver . && echo $GITHUB_TOKEN | docker login ghcr.io -u MrDNAlex --password-stdin && docker push ghcr.io/mrdnalex/githubcli-webserver:latest
+        run: docker build -t mrdnalex/githubcli-webserver .
+
+      - name: Login to Docker Registry
+        shell: bash
+        run: echo $GITHUB_TOKEN | docker login ghcr.io -u MrDNAlex --password-stdin
+      
+      - name: Push to Docker Registry
+        shell: bash
+        run: docker push ghcr.io/mrdnalex/githubcli-webserver:latest
+
+
