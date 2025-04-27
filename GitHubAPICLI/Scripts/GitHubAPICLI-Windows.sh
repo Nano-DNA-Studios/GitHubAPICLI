@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+
+
 # Configuraton
 GitHubPAT=""
 Secret=""
