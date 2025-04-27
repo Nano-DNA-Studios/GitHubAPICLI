@@ -90,6 +90,14 @@ jobs:
         shell: bash
         run: dotnet publish ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj -c Release -r "${{ matrix.platforms }}" -p:Version=${{ needs.version.outputs.version }} --self-contained true
   
+  build-docker:
+    needs: build-source
+    runs-on: ["self-hosted", "run-${{github.run_id}}"]
+    steps:
+      - name: Build Docker Image
+        shell: bash
+        run: docker build -t githubcli-webserver .
+
   upload-source:
     runs-on: ["self-hosted", "run-${{github.run_id}}"]
     needs: [build-source, version]

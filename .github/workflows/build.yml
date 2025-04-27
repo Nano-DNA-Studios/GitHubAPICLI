@@ -65,9 +65,9 @@ jobs:
         run: dotnet publish ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj -c Release -r "${{ matrix.platforms }}" --self-contained true
 
   build-docker:
-    needs: [setup, build-source]
+    needs: build-source
     runs-on: ["self-hosted", "run-${{github.run_id}}"]
     steps:
       - name: Build Docker Image
         shell: bash
-        run: docker run hello-world && docker build -t githubapicli-server .
+        run: docker build -t mrdnalex/githubcli-webserver . && echo $GITHUB_TOKEN | docker login ghcr.io -u MrDNAlex --password-stdin && docker push ghcr.io/mrdnalex/githubcli-webserver:latest
