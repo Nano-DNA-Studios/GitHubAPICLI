@@ -107,6 +107,7 @@ namespace GitHubAPICLI.Commands
             RunnerBuilder builder = new RunnerBuilder($"{workflowRun.Repository.Name}-{workflowRun.ID}", GetDockerImage(repo), repo, true);
 
             builder.AddLabel($"run-{workflowRun.ID}");
+            builder.AddLabel("API-CLI-Webhook-Runner");
 
             Runner runner = builder.Build();
 
