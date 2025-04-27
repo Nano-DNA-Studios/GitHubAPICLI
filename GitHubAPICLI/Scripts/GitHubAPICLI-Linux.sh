@@ -6,4 +6,4 @@ Secret=""
 DefaultImage=""
 
 # Run the Container
-docker run -e GitHubPAT=$GitHubPAT -e Secret=$Secret -e DefaultImage=$DefaultImage -e DOCKER_HOST=tcp://host.docker.internal:2375 -p 8080:8080 dotnet-idk
+docker run --name githubapicli-webhookserver -e GitHubPAT=$GitHubPAT -e Secret=$Secret -e DefaultImage=$DefaultImage --privileged -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 dotnet-idk
