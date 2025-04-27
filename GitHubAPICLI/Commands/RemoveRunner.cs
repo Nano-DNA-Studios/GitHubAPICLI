@@ -9,18 +9,24 @@ using NanoDNA.DockerManager;
 
 namespace GitHubAPICLI.Commands
 {
+    /// <summary>
+    /// Removes Registered Runners from a GitHub Repository
+    /// </summary>
     internal class RemoveRunner : Command
     {
-        //Make this a command for Removing a runner from a repository 
-
-        //Optional not fill in the repo, org and runner name, and remove all the ones that are stored / tracked in settings
-
+        /// <summary>
+        /// Initializes a new Command Instance of <see cref="RemoveRunner"/>
+        /// </summary>
+        /// <param name="dataManager">DataManager containing context for the Command</param>
         public RemoveRunner(IDataManager dataManager) : base(dataManager) { }
 
+        /// <inheritdoc/>
         public override string Name => "removerunner";
 
+        /// <inheritdoc/>
         public override string Description => "Removes / Unregisters Runner through the GitHub API";
 
+        /// <inheritdoc/>
         public override void Execute(string[] args)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
@@ -154,10 +160,6 @@ namespace GitHubAPICLI.Commands
             settings.SaveSettings();
             Console.WriteLine($"Removed all Runners from {repo.FullName}");
         }
-
-        //
-        //Eventually Convert this to removing all runners associated to the Repository
-        //
 
         /// <summary>
         /// Removes all the Saved Registered Runners

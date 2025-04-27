@@ -7,14 +7,24 @@ using System;
 
 namespace GitHubAPICLI.Commands
 {
+    /// <summary>
+    /// Gets a Repositories Info and Displays it to the Console
+    /// </summary>
     internal class GetRepository : Command
     {
+        /// <summary>
+        /// Initializes a new Command Instance of <see cref="GetRepository"/>
+        /// </summary>
+        /// <param name="dataManager">DataManager containing context for the Command</param>
         public GetRepository(IDataManager dataManager) : base(dataManager) { }
 
+        /// <inheritdoc/>
         public override string Name => "getrepository";
 
+        /// <inheritdoc/>
         public override string Description => "Gets the JSON of a Repository";
 
+        /// <inheritdoc/>
         public override void Execute(string[] args)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;

@@ -7,8 +7,15 @@ using System;
 
 namespace GitHubAPICLI.Commands
 {
+    /// <summary>
+    /// Fills in all the Pending Workflows by Spawning a GitHub Action Worker for them
+    /// </summary>
     internal class FillWorkflows : Command
     {
+        /// <summary>
+        /// Initializes a new Command Instance of <see cref="FillWorkflows"/>
+        /// </summary>
+        /// <param name="dataManager">DataManager containing context for the Command</param>
         public FillWorkflows(IDataManager dataManager) : base(dataManager) { }
 
         /// <inheritdoc/>
