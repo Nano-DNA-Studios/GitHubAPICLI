@@ -30,8 +30,6 @@ jobs:
   build-nuget:
     runs-on: ["self-hosted", "run-${{github.run_id}}"]
     needs: setup
-    outputs:
-      packages: ${{ steps.extract-package-names.outputs.PACKAGES}}
     steps:
       - name: Build for NuGet 
         shell: bash
