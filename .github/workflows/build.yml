@@ -72,9 +72,17 @@ jobs:
         shell: bash
         run: docker build -t mrdnalex/githubcli-webserver .
 
-      - name: Login to Docker Registry
-        shell: bash
-        run: echo "$GITHUB_TOKEN" | docker login ghcr.io -u MrDNAlex --password-stdin
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+
+      #- name: Login to Docker Registry
+      #  shell: bash
+      #  run: echo "$GITHUB_TOKEN" | docker login ghcr.io -u MrDNAlex --password-stdin
       
       - name: Push to Docker Registry
         shell: bash
