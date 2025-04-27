@@ -139,21 +139,19 @@ namespace GitHubAPICLI.Commands
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
 
-            string defaultDockerImage = settings.DefaultDockerImage;
-
             ActionWorkerConfig config = settings.ActionWorkerConfigs.FirstOrDefault((config) => config.RepoName == repo.Name);
 
-            if (config == null)
-            {
-                settings.AddActionWorkerConfig(new ActionWorkerConfig(repo.Owner.Login, repo.Name, defaultDockerImage));
+            string defaultDockerImage = settings.DefaultDockerImage;
 
-                lock (threadLock)
-                    settings.SaveSettings();
+            if (config != null)
+                return config.ContainerImage;
 
-                return defaultDockerImage;
-            }
+            settings.AddActionWorkerConfig(new ActionWorkerConfig(repo.Owner.Login, repo.Name, defaultDockerImage));
 
-            return config.ContainerImage;
+            lock (threadLock)
+                settings.SaveSettings();
+
+            return defaultDockerImage;
         }
 
         /// <summary>
@@ -167,10 +165,10 @@ namespace GitHubAPICLI.Commands
 
             WorkflowRun workRun = repo.GetWorkflows().FirstOrDefault((run) => run.ID == workflowRun.ID);
 
+            string repoDirectory = $"{settings.LogsOutput}\\{repo.Name}";
+
             if (workRun == null)
                 return;
-
-            string repoDirectory = $"{settings.LogsOutput}\\{repo.Name}";
 
             if (!Directory.Exists(repoDirectory))
                 Directory.CreateDirectory(repoDirectory);
