@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- Building / Publishing Metadata -->
+	<PropertyGroup>
+		<RootNamespace>GitHubAPICLI</RootNamespace>
+		<ProductName>$(RootNamespace)</ProductName>
+		<AssemblyName>$(RootNamespace)</AssemblyName>
+		<OutputType>Exe</OutputType>
+		<IsPackable>true</IsPackable>
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>githubapi</ToolCommandName>
+		<DocumentationFile>bin\$(Platform)\$(Configuration)\$(TargetFramework)\Documentation\$(RootNamespace).xml</DocumentationFile>
+		<PdbFile>bin\$(Platform)\$(Configuration)\$(TargetFramework)\Documentation\$(RootNamespace).pdb</PdbFile>
+	</PropertyGroup>
+
+	<!-- Add Individual Platforms in NuGet Package -->
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<None Include="..\README.md" Pack="true" PackagePath="" />
+		<None Include="bin\x64\Release\net*\$(AssemblyName).exe" Pack="true" PackagePath="runtimes\win-x64\lib" />
+		<None Include="bin\x64\Release\net*\$(AssemblyName).xml" Pack="true" PackagePath="runtimes\win-x64\lib" />
+		<None Include="bin\x64\Release\net*\$(AssemblyName).pdb" Pack="true" PackagePath="runtimes\win-x64\lib" />
+		<None Include="bin\x86\Release\net*\$(AssemblyName).exe" Pack="true" PackagePath="runtimes\win-x86\lib" />
+		<None Include="bin\x86\Release\net*\$(AssemblyName).xml" Pack="true" PackagePath="runtimes\win-x86\lib" />
+		<None Include="bin\x86\Release\net*\$(AssemblyName).pdb" Pack="true" PackagePath="runtimes\win-x86\lib" />
+	</ItemGroup>
+
+	<!-- Development Project References -->
+	<ItemGroup Condition="'$(Configuration)' == 'Debug' and '$(RepositoryName)' == 'GitHubAPICLI-Solution' ">
+		<ProjectReference Include="..\..\NanoDNA.CLIFramework\NanoDNA.CLIFramework\NanoDNA.CLIFramework.csproj" />
+		<ProjectReference Include="..\..\NanoDNA.GitHubManager\NanoDNA.GitHubManager\NanoDNA.GitHubManager.csproj" />
+	</ItemGroup>
+
+	<!-- NuGet Package References -->
+	<ItemGroup>
+		<PackageReference Include="NanoDNA.CLIFramework" Version="0.1.1" Condition="'$(Configuration)' == 'Release'" />
+		<PackageReference Include="NanoDNA.GitHubManager" Version="0.1.1" Condition="'$(Configuration)' == 'Release'" />
+	</ItemGroup>
+
+</Project>
