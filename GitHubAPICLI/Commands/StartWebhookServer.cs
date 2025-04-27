@@ -170,7 +170,7 @@ namespace GitHubAPICLI.Commands
 
             WorkflowRun workRun = repo.GetWorkflows().FirstOrDefault((run) => run.ID == workflowRun.ID);
 
-            string repoDirectory = $"{settings.LogsOutput}\\{repo.Name}";
+            string repoDirectory = Path.Join(settings.LogsOutput, repo.Name);
 
             if (workRun == null)
                 return;
@@ -178,7 +178,7 @@ namespace GitHubAPICLI.Commands
             if (!Directory.Exists(repoDirectory))
                 Directory.CreateDirectory(repoDirectory);
 
-            File.WriteAllBytes($"{repoDirectory}\\{repo.Name}-{workRun.ID}-Logs.zip", workRun.GetLogs());
+            File.WriteAllBytes(Path.Join(repoDirectory, $"{repo.Name}-{workRun.ID}-Logs.zip"), workRun.GetLogs());
         }
     }
 }
