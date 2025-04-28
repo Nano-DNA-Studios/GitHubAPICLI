@@ -9,8 +9,6 @@
 		<IsPackable>true</IsPackable>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>githubapi</ToolCommandName>
-		<DocumentationFile>bin\$(Platform)\$(Configuration)\$(TargetFramework)\Documentation\$(RootNamespace).xml</DocumentationFile>
-		<PdbFile>bin\$(Platform)\$(Configuration)\$(TargetFramework)\Documentation\$(RootNamespace).pdb</PdbFile>
 	</PropertyGroup>
 
 	<!-- Add Individual Platforms in NuGet Package -->
@@ -35,10 +33,17 @@
 		<PackageReference Include="NanoDNA.CLIFramework" Version="0.1.1" Condition="'$(Configuration)' == 'Release'" />
 		<PackageReference Include="NanoDNA.GitHubManager" Version="0.1.2" Condition="'$(Configuration)' == 'Release'" />
 	</ItemGroup>
-	
+
 	<!-- Scripts Folder-->
 	<ItemGroup>
-	  <Folder Include="Scripts\" />
+		<Folder Include="Scripts\" />
+	</ItemGroup>
+
+	<!-- Include Items to Edit -->
+	<ItemGroup>
+		<None Include="..\README.md" />
+		<None Include="..\Directory.Build.props" />
+		<None Include="..\LICENSE" />
 	</ItemGroup>
 
 </Project>
