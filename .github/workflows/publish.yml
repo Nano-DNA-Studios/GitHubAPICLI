@@ -80,7 +80,6 @@ jobs:
     runs-on: ["self-hosted", "run-${{github.run_id}}"]
     needs: version
     strategy:
-      max-parallel: 6
       matrix:
         platforms: ["win-x64", "win-x86", "linux-x64", "linux-arm64", "osx-x64", "osx-arm64"]
     steps:
@@ -102,7 +101,6 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     strategy:
-      max-parallel: 6
       matrix:
         platforms: ["win-x64", "win-x86", "linux-x64", "linux-arm64", "osx-x64", "osx-arm64"]
     steps:
