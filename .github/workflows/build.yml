@@ -69,8 +69,3 @@ jobs:
       - name: Build Docker Image
         shell: bash
         run: docker build -t ghcr.io/nano-dna-studios/githubapicli-server:latest .
-
-
-
-
-
