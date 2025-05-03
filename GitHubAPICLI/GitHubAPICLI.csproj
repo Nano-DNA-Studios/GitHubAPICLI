@@ -38,8 +38,8 @@
 
 	<!-- NuGet Package References -->
 	<ItemGroup>
-		<PackageReference Include="NanoDNA.CLIFramework" Version="0.1.1" Condition="'$(Configuration)' == 'Release'" />
-		<PackageReference Include="NanoDNA.GitHubManager" Version="0.1.2" Condition="'$(Configuration)' == 'Release'" />
+		<PackageReference Include="NanoDNA.CLIFramework" Version="0.2.0" Condition="'$(Configuration)' == 'Release'" />
+		<PackageReference Include="NanoDNA.GitHubManager" Version="0.2.0" Condition="'$(Configuration)' == 'Release'" />
 	</ItemGroup>
 
 	<!-- Scripts Folder-->
