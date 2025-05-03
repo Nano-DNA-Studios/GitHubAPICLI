@@ -9,7 +9,7 @@ After learning about GitHub Action Workers on the Job and utilizing a Self Hoste
 Alongside this tool, some base Libraries were developed in Isolation to allow users to develop their own versions of this tool or implement chunks into unrelated projects. These Libraries each have their own NuGet Packages published that can be used freely which are listed here.
 
 ## Requirements
-----
+---
 - .NET 8 or Later installed
 - GitHub PAT (Personal Access Token)
 	- API Communication Scope : ``repo``
@@ -17,15 +17,15 @@ Alongside this tool, some base Libraries were developed in Isolation to allow us
 - Docker is Installed (For GitHub Action Runners)
 
 ## Installation
-----
+---
 There are multiple ways of installing this tool and using it. Common methods are to Download the Self-Contained Builds, Install it from NuGet or Cloning it from GitHub.
 
 ### Download Self Contained Build
-----
+---
 Go to the [``Release``](https://github.com/Nano-DNA-Studios/GitHubAPICLI/releases) Page of the Repository and Download the Tools Version with the Features you want for your Target Platform and OS.
 
 ### Install from NuGet
-----
+---
 Use the following command to install the Tool. Replace ``<version>`` with the appropriate version using ``0.0.0`` format.
 
 ```bash
@@ -52,11 +52,11 @@ Libraries :
 - [NanoDNA.ProcessRunner](https://github.com/Nano-DNA-Studios/NanoDNA.ProcessRunner) - Dispatches and Manages System and Shell calls on multiple OS's, used for automation.
 
 ## License
-----
+---
 Individuals can use the Tool under the MIT License
 
 Groups and or Companies consisting of 5 or more people can Contact MrDNAlex through the email ``Mr.DNAlex.2003@gmail.com`` to License the Tool for usage. 
 
 ## Support
-----
+---
 For Additional Support, Contact MrDNAlex through the email : ``Mr.DNAlex.2003@gmail.com``.
