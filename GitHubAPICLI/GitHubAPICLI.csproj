@@ -10,6 +10,7 @@
 	<PropertyGroup>
 		<RootNamespace>GitHubAPICLI</RootNamespace>
 		<ProductName>$(RootNamespace)</ProductName>
+		<PackageId>$(RootNamespace)</PackageId>
 		<AssemblyName>$(RootNamespace)</AssemblyName>
 		<OutputType>Exe</OutputType>
 		<IsPackable>true</IsPackable>
