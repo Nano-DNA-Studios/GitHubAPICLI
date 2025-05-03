@@ -1,5 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<!-- Project Reference Conditionals -->
+	<PropertyGroup>
+		<UseProjectReference Condition="'$(Configuration)' == 'Debug' and '$(RepositoryName)' == 'GitHubAPICLI-Solution'">true</UseProjectReference>
+		<UseProjectReference Condition="'$(Configuration)' == 'Release' or '$(RepositoryName)' == ''">false</UseProjectReference>
+	</PropertyGroup>
+
 	<!-- Building / Publishing Metadata -->
 	<PropertyGroup>
 		<RootNamespace>GitHubAPICLI</RootNamespace>
@@ -24,9 +30,9 @@
 	</ItemGroup>
 
 	<!-- Development Project References -->
-	<ItemGroup Condition="'$(Configuration)' == 'Debug' and '$(RepositoryName)' == 'GitHubAPICLI-Solution' ">
-		<ProjectReference Include="..\..\NanoDNA.CLIFramework\NanoDNA.CLIFramework\NanoDNA.CLIFramework.csproj" />
-		<ProjectReference Include="..\..\NanoDNA.GitHubManager\NanoDNA.GitHubManager\NanoDNA.GitHubManager.csproj" />
+	<ItemGroup Condition="'$(UseProjectReference)' == 'true'" >
+		<ProjectReference Include="..\..\CLIFramework\CLIFramework\CLIFramework.csproj" />
+		<ProjectReference Include="..\..\GitHubManager\GitHubManager\GitHubManager.csproj" />
 	</ItemGroup>
 
 	<!-- NuGet Package References -->
