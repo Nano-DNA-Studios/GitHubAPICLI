@@ -52,7 +52,6 @@
 		<!-- Workflow Scripts -->
 		<None Include="..\.github\workflows\build.yml" Link="Workflows\build.yml" />
 		<None Include="..\.github\workflows\publish.yml" Link="Workflows\publish.yml" />
-		<None Include="..\.github\workflows\test.yml" Link="Workflows\test.yml" />
 	</ItemGroup>
 
 </Project>
