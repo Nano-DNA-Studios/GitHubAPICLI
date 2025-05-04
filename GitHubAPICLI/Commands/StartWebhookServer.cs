@@ -99,7 +99,7 @@ namespace GitHubAPICLI.Commands
                 AddRunner(run);
             });
 
-            webhookService.Start(settings.WebhookServerPort);
+            webhookService.Start(settings.WebhookServerPort, true);
         }
 
         /// <summary>
@@ -126,12 +126,16 @@ namespace GitHubAPICLI.Commands
             lock (threadLock)
                 settings.SaveSettings();
 
+            Console.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Added Runner {runner.Name} ({runner.ID}) to {repo.FullName}");
+
             runner.StopRunner += (runnner) =>
             {
                 settings.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
 
                 lock (threadLock)
                     settings.SaveSettings();
+
+                Console.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Removed Runner {runner.Name} ({runner.ID}) to {repo.FullName}");
             };
         }
 

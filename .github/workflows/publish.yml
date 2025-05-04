@@ -86,14 +86,6 @@ jobs:
       - name: Build as Standalone Source
         shell: bash
         run: dotnet publish ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj -c Release -r "${{ matrix.platforms }}" -p:Version=${{ needs.version.outputs.version }} --self-contained true
-  
-  build-docker:
-    needs: [build-source, version]
-    runs-on: ["self-hosted", "run-${{github.run_id}}"]
-    steps:
-      - name: Build Docker Image
-        shell: bash
-        run: docker build -t ghcr.io/nano-dna-studios/githubapicli-server:${{ needs.version.outputs.version }} .
 
   upload-source:
     runs-on: ["self-hosted", "run-${{github.run_id}}"]
@@ -143,21 +135,6 @@ jobs:
           --source "https://api.nuget.org/v3/index.json" \
           --api-key "$NUGET_API_KEY" \
           --skip-duplicate
-
-  upload-docker:
-    needs: [build-docker, version]
-    runs-on: ["self-hosted", "run-${{github.run_id}}"]
-    steps:
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and Push
-        shell: bash
-        run: docker push ghcr.io/nano-dna-studios/githubapicli-server:${{ needs.version.outputs.version }}
 
   upload-scripts:
     runs-on: ["self-hosted", "run-${{github.run_id}}"]

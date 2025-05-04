@@ -61,11 +61,3 @@ jobs:
       - name: Build as Standalone Source
         shell: bash
         run: dotnet build ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj -c Release -r "${{ matrix.platforms }}" --self-contained true
-
-  build-docker:
-    needs: build-source
-    runs-on: ["self-hosted", "run-${{github.run_id}}"]
-    steps:
-      - name: Build Docker Image
-        shell: bash
-        run: docker build -t ghcr.io/nano-dna-studios/githubapicli-server:latest .
