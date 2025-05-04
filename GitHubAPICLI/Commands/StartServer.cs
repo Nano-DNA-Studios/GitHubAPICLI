@@ -14,13 +14,13 @@ namespace GitHubAPICLI.Commands
     /// <summary>
     /// Starts a Thread Blocking Webhooks Server for GitHub API Action Workflows
     /// </summary>
-    internal class StartWebhookServer : Command
+    internal class StartServer : Command
     {
         /// <summary>
-        /// Initializes a new Command Instanc of <see cref="StartWebhookServer"/>
+        /// Initializes a new Command Instanc of <see cref="StartServer"/>
         /// </summary>
         /// <param name="dataManager"></param>
-        public StartWebhookServer(IDataManager dataManager) : base(dataManager) { }
+        public StartServer(IDataManager dataManager) : base(dataManager) { }
 
         /// <summary>
         /// Thread Lock Object for Thread Safety when Saving Settings
@@ -28,7 +28,7 @@ namespace GitHubAPICLI.Commands
         public object threadLock = new object();
 
         /// <inheritdoc/>
-        public override string Name => "startwebhookserver";
+        public override string Name => "startserver";
 
         /// <inheritdoc/>
         public override string Description => "Starts a Webhook Server for receiving Webhooks from GitHub API related to Action Workflows";

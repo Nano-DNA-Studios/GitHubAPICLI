@@ -9,16 +9,16 @@ namespace GitHubAPICLI.Commands
     /// <summary>
     /// Registers the Info needed to Launch a new Webhook Server for GitHub Actions to be received
     /// </summary>
-    internal class RegisterWebhookServer : Command
+    internal class RegisterServer : Command
     {
         /// <summary>
-        /// Initializes a new Command Instance of <see cref="RegisterWebhookServer"/>
+        /// Initializes a new Command Instance of <see cref="RegisterServer"/>
         /// </summary>
         /// <param name="dataManager">DataManager containing context for the Command</param>
-        public RegisterWebhookServer(IDataManager dataManager) : base(dataManager) { }
+        public RegisterServer(IDataManager dataManager) : base(dataManager) { }
 
         /// <inheritdoc/>
-        public override string Name => "registerwebhookserver";
+        public override string Name => "registerserver";
 
         /// <inheritdoc/>
         public override string Description => "Registers the Info needed to Launch a new Webhook Server for GitHub Actions to be received";

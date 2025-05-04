@@ -31,7 +31,7 @@
 	</ItemGroup>
 
 	<!-- Development Project References -->
-	<ItemGroup Condition="'$(UseProjectReference)' == 'true'" >
+	<ItemGroup Condition="'$(UseProjectReference)' == 'true'">
 		<ProjectReference Include="..\..\CLIFramework\CLIFramework\CLIFramework.csproj" />
 		<ProjectReference Include="..\..\GitHubManager\GitHubManager\GitHubManager.csproj" />
 	</ItemGroup>
@@ -39,12 +39,7 @@
 	<!-- NuGet Package References -->
 	<ItemGroup>
 		<PackageReference Include="NanoDNA.CLIFramework" Version="0.2.0" Condition="'$(Configuration)' == 'Release'" />
-		<PackageReference Include="NanoDNA.GitHubManager" Version="0.2.0" Condition="'$(Configuration)' == 'Release'" />
-	</ItemGroup>
-
-	<!-- Scripts Folder-->
-	<ItemGroup>
-		<Folder Include="Scripts\" />
+		<PackageReference Include="NanoDNA.GitHubManager" Version="0.2.1" Condition="'$(Configuration)' == 'Release'" />
 	</ItemGroup>
 
 	<!-- Include Items to Edit -->
@@ -57,7 +52,7 @@
 		<!-- Workflow Scripts -->
 		<None Include="..\.github\workflows\build.yml" Link="Workflows\build.yml" />
 		<None Include="..\.github\workflows\publish.yml" Link="Workflows\publish.yml" />
-		<None Include="..\.github\workflows\test.yml"  Link="Workflows\test.yml" />
+		<None Include="..\.github\workflows\test.yml" Link="Workflows\test.yml" />
 	</ItemGroup>
 
 </Project>
