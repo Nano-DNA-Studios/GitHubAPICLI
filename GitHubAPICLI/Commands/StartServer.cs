@@ -99,6 +99,8 @@ namespace GitHubAPICLI.Commands
                 AddRunner(run);
             });
 
+            Console.WriteLine("Webhook Server Started!");
+
             webhookService.Start(settings.WebhookServerPort, true);
         }
 
