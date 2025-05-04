@@ -10,8 +10,6 @@ namespace GitHubAPICLI
             app.Run(args);
 
 
-
-
         }
     }
 }
