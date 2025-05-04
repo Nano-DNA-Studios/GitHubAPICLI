@@ -8,6 +8,10 @@ namespace GitHubAPICLI
         {
             GitHubAPICLIApplication app = new GitHubAPICLIApplication();
             app.Run(args);
+
+
+
+
         }
     }
 }
