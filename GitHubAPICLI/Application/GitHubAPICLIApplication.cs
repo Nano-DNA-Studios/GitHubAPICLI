@@ -10,8 +10,6 @@ namespace GitHubAPICLI.Application
         /// <summary>
         /// Initializes a new Instance of the <see cref="GitHubAPICLIApplication"/>
         /// </summary>
-        public GitHubAPICLIApplication() : base()
-        {
-        }
+        public GitHubAPICLIApplication() : base() { }
     }
 }
