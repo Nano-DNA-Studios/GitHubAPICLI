@@ -7,14 +7,24 @@ using System;
 
 namespace GitHubAPICLI.Commands
 {
+    /// <summary>
+    /// Registers a GitHub Action Worker Runner configuration for a specific Repository.
+    /// </summary>
     internal class RegisterRunner : Command
     {
+        /// <summary>
+        /// Initializes a new Command Instance of <see cref="RegisteredRunner"/>
+        /// </summary>
+        /// <param name="dataManager">DataManager containing context for the Command</param>
         public RegisterRunner(IDataManager dataManager) : base(dataManager) { }
 
+        /// <inheritdoc/>
         public override string Name => "registerrunner";
 
+        /// <inheritdoc/>
         public override string Description => throw new NotImplementedException();
 
+        /// <inheritdoc/>
         public override void Execute(string[] args)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
@@ -24,13 +34,6 @@ namespace GitHubAPICLI.Commands
                 Console.WriteLine("GitHub PAT is not set. Please register it using the 'registerpat' command.");
                 return;
             }
-
-            //if (args.Length == 0)
-            //{
-            //    //List out all the runners that are registered in the settings
-            //    Console.WriteLine("No Arguments Provided, please provide the GitHub Owner and Repository Name");
-            //    return;
-            //}
 
             if (args.Length != 3)
             {

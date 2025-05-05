@@ -8,16 +8,24 @@ using System.Linq;
 
 namespace GitHubAPICLI.Commands
 {
+    /// <summary>
+    /// Gets all the Queued Workflows belonging to a GitHub Repository or, all registered Repositories.
+    /// </summary>
     internal class GetWorkflows : Command
     {
-        public GetWorkflows(IDataManager dataManager) : base(dataManager)
-        {
-        }
+        /// <summary>
+        /// Initializes a new Command Instance of <see cref="GetWorkflows"/>
+        /// </summary>
+        /// <param name="dataManager">DataManager containing context for the Command</param>
+        public GetWorkflows(IDataManager dataManager) : base(dataManager) { }
 
+        /// <inheritdoc/>
         public override string Name => "getworkflows";
 
+        /// <inheritdoc/>
         public override string Description => "Gets all the Queued Workflows belonging to a GitHub Repsository or, all registered Repositories";
 
+        /// <inheritdoc/>
         public override void Execute(string[] args)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
@@ -53,6 +61,9 @@ namespace GitHubAPICLI.Commands
             DisplayRepositoryWorkflows(repo);
         }
 
+        /// <summary>
+        /// Displays all the Queued Workflows for the Repositories that have Action Worker Configs Registered
+        /// </summary>
         private void DisplayRegisteredRepoWorkflows()
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
@@ -71,6 +82,10 @@ namespace GitHubAPICLI.Commands
             }
         }
 
+        /// <summary>
+        /// Displays the Queued Workflows for a Single Repository
+        /// </summary>
+        /// <param name="repo">Repository to Display the Worflows</param>
         private void DisplayRepositoryWorkflows(Repository repo)
         {
             WorkflowRun[] workflowRuns = repo.GetWorkflows();
@@ -90,11 +105,13 @@ namespace GitHubAPICLI.Commands
             }
 
             foreach (WorkflowRun workflow in queuedRuns)
-            {
                 DisplayWorkflowInfo(workflow);
-            }
         }
 
+        /// <summary>
+        /// Displays the Workflow Information to the Console in a Formatted Manner
+        /// </summary>
+        /// <param name="workflow">Workflow Run Info to Display</param>
         private void DisplayWorkflowInfo(WorkflowRun workflow)
         {
             Console.WriteLine($"========== Workflow {workflow.ID} ==========");

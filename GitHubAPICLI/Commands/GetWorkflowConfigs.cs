@@ -5,14 +5,24 @@ using System;
 
 namespace GitHubAPICLI.Commands
 {
+    /// <summary>
+    /// Gets and Displays the Registered Workflow Configs for Filling in Repo Workflows
+    /// </summary>
     internal class GetWorkflowConfigs : Command
     {
+        /// <summary>
+        /// Initializes a new Command Instance of <see cref="GetWorkflowConfigs"/>
+        /// </summary>
+        /// <param name="dataManager">DataManager containing context for the Command</param>
         public GetWorkflowConfigs(IDataManager dataManager) : base(dataManager) { }
 
+        /// <inheritdoc/>
         public override string Name => "getworkflowconfigs";
 
+        /// <inheritdoc/>
         public override string Description => "Displays all the Registered Workflow Configs for Filling in Repo Workflows";
 
+        /// <inheritdoc/>
         public override void Execute(string[] args)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;

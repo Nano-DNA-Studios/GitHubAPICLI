@@ -5,14 +5,24 @@ using System;
 
 namespace GitHubAPICLI.Commands
 {
+    /// <summary>
+    /// Registers the GitHub Personal Access Token (PAT) for the application.
+    /// </summary>
     internal class RegisterPAT : Command
     {
+        /// <summary>
+        /// Initializes a new Command Instance of <see cref="RegisterPAT"/>
+        /// </summary>
+        /// <param name="dataManager">DataManager containing context for the Command</param>
         public RegisterPAT(IDataManager dataManager) : base(dataManager) { }
 
+        /// <inheritdoc/>
         public override string Name => "registerpat";
 
+        /// <inheritdoc/>
         public override string Description => "Registers the Applications GitHub PAT Token";
 
+        /// <inheritdoc/>
         public override void Execute(string[] args)
         {
             if (args.Length != 1)

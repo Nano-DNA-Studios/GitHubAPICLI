@@ -46,7 +46,7 @@ namespace GitHubAPICLI.Application
         /// </summary>
         /// <param name="runner">Action Worker Runner to Compare</param>
         /// <returns>True if they are the Same, False otherwise</returns>
-        public bool SameAs (RegisteredRunner runner)
+        public bool SameAs(RegisteredRunner runner)
         {
             return RepoOwner == runner.RepoOwner &&
                    RepoName == runner.RepoName &&

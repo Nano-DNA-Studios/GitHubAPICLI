@@ -7,14 +7,24 @@ using System;
 
 namespace GitHubAPICLI.Commands
 {
+    /// <summary>
+    /// Gets all the Registered Active Runners belonging to a Repository
+    /// </summary>
     internal class GetRunners : Command
     {
+        /// <summary>
+        /// Initializes a new Command Instance of <see cref="GetRunners"/>
+        /// </summary>
+        /// <param name="dataManager">DataManager containing context for the Command</param>
         public GetRunners(IDataManager dataManager) : base(dataManager) { }
 
+        /// <inheritdoc/>
         public override string Name => "getrunners";
 
+        /// <inheritdoc/>
         public override string Description => "Gets the Runners that are registered and belong to a repository.";
 
+        /// <inheritdoc/>
         public override void Execute(string[] args)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;

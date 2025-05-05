@@ -6,16 +6,24 @@ using System.IO;
 
 namespace GitHubAPICLI.Commands
 {
-    internal class RegisterWebhookServer : Command
+    /// <summary>
+    /// Registers the Info needed to Launch a new Webhook Server for GitHub Actions to be received
+    /// </summary>
+    internal class RegisterServer : Command
     {
-        public RegisterWebhookServer(IDataManager dataManager) : base(dataManager)
-        {
-        }
+        /// <summary>
+        /// Initializes a new Command Instance of <see cref="RegisterServer"/>
+        /// </summary>
+        /// <param name="dataManager">DataManager containing context for the Command</param>
+        public RegisterServer(IDataManager dataManager) : base(dataManager) { }
 
-        public override string Name => "registerwebhookserver";
+        /// <inheritdoc/>
+        public override string Name => "registerserver";
 
+        /// <inheritdoc/>
         public override string Description => "Registers the Info needed to Launch a new Webhook Server for GitHub Actions to be received";
 
+        /// <inheritdoc/>
         public override void Execute(string[] args)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;

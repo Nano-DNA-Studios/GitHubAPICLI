@@ -6,28 +6,36 @@ using NanoDNA.GitHubManager.Events;
 using NanoDNA.GitHubManager.Models;
 using NanoDNA.GitHubManager.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace GitHubAPICLI.Commands
 {
-    internal class StartWebhookServer : Command
+    /// <summary>
+    /// Starts a Thread Blocking Webhooks Server for GitHub API Action Workflows
+    /// </summary>
+    internal class StartServer : Command
     {
-        public StartWebhookServer(IDataManager dataManager) : base(dataManager) { }
+        /// <summary>
+        /// Initializes a new Command Instanc of <see cref="StartServer"/>
+        /// </summary>
+        /// <param name="dataManager"></param>
+        public StartServer(IDataManager dataManager) : base(dataManager) { }
 
+        /// <summary>
+        /// Thread Lock Object for Thread Safety when Saving Settings
+        /// </summary>
         public object threadLock = new object();
 
-        public override string Name => "startwebhookserver";
+        /// <inheritdoc/>
+        public override string Name => "startserver";
 
+        /// <inheritdoc/>
         public override string Description => "Starts a Webhook Server for receiving Webhooks from GitHub API related to Action Workflows";
 
-        public Dictionary<string, Runner> Runners { get; set; }
-
+        /// <inheritdoc/>
         public override void Execute(string[] args)
         {
-            Runners = new Dictionary<string, Runner>();
-
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
 
             if (string.IsNullOrEmpty(settings.GitHubPAT))
@@ -91,7 +99,9 @@ namespace GitHubAPICLI.Commands
                 AddRunner(run);
             });
 
-            webhookService.Start(settings.WebhookServerPort);
+            Console.WriteLine("Webhook Server Started!");
+
+            webhookService.Start(settings.WebhookServerPort, true);
         }
 
         /// <summary>
@@ -113,12 +123,12 @@ namespace GitHubAPICLI.Commands
 
             runner.Start();
 
-            Runners.Add(workflowRun.ID, runner);
-
             settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
 
             lock (threadLock)
                 settings.SaveSettings();
+
+            Console.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Added Runner {runner.Name} ({runner.ID}) to {repo.FullName}");
 
             runner.StopRunner += (runnner) =>
             {
@@ -126,6 +136,8 @@ namespace GitHubAPICLI.Commands
 
                 lock (threadLock)
                     settings.SaveSettings();
+
+                Console.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Removed Runner {runner.Name} ({runner.ID}) to {repo.FullName}");
             };
         }
 
@@ -164,7 +176,7 @@ namespace GitHubAPICLI.Commands
 
             WorkflowRun workRun = repo.GetWorkflows().FirstOrDefault((run) => run.ID == workflowRun.ID);
 
-            string repoDirectory = $"{settings.LogsOutput}\\{repo.Name}";
+            string repoDirectory = Path.Join(settings.LogsOutput, repo.Name);
 
             if (workRun == null)
                 return;
@@ -172,7 +184,7 @@ namespace GitHubAPICLI.Commands
             if (!Directory.Exists(repoDirectory))
                 Directory.CreateDirectory(repoDirectory);
 
-            File.WriteAllBytes($"{repoDirectory}\\{repo.Name}-{workRun.ID}-Logs.zip", workRun.GetLogs());
+            File.WriteAllBytes(Path.Join(repoDirectory, $"{repo.Name}-{workRun.ID}-Logs.zip"), workRun.GetLogs());
         }
     }
 }

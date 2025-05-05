@@ -12,7 +12,6 @@ namespace GitHubAPICLI.Application
         /// </summary>
         public GitHubAPICLIApplication() : base()
         {
-           // Console.WriteLine(JsonConvert.SerializeObject(this, Formatting.Indented));
         }
     }
 }

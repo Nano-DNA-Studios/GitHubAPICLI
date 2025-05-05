@@ -1,16 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<!-- Project Reference Conditionals -->
+	<PropertyGroup>
+		<UseProjectReference Condition="'$(Configuration)' == 'Debug' and '$(RepositoryName)' == 'GitHubAPICLI-Solution'">true</UseProjectReference>
+		<UseProjectReference Condition="'$(Configuration)' == 'Release' or '$(RepositoryName)' == ''">false</UseProjectReference>
+	</PropertyGroup>
+
 	<!-- Building / Publishing Metadata -->
 	<PropertyGroup>
 		<RootNamespace>GitHubAPICLI</RootNamespace>
 		<ProductName>$(RootNamespace)</ProductName>
+		<PackageId>$(RootNamespace)</PackageId>
 		<AssemblyName>$(RootNamespace)</AssemblyName>
 		<OutputType>Exe</OutputType>
 		<IsPackable>true</IsPackable>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>githubapi</ToolCommandName>
-		<DocumentationFile>bin\$(Platform)\$(Configuration)\$(TargetFramework)\Documentation\$(RootNamespace).xml</DocumentationFile>
-		<PdbFile>bin\$(Platform)\$(Configuration)\$(TargetFramework)\Documentation\$(RootNamespace).pdb</PdbFile>
+		<DebugType>embedded</DebugType>
 	</PropertyGroup>
 
 	<!-- Add Individual Platforms in NuGet Package -->
@@ -25,15 +31,27 @@
 	</ItemGroup>
 
 	<!-- Development Project References -->
-	<ItemGroup Condition="'$(Configuration)' == 'Debug' and '$(RepositoryName)' == 'GitHubAPICLI-Solution' ">
-		<ProjectReference Include="..\..\NanoDNA.CLIFramework\NanoDNA.CLIFramework\NanoDNA.CLIFramework.csproj" />
-		<ProjectReference Include="..\..\NanoDNA.GitHubManager\NanoDNA.GitHubManager\NanoDNA.GitHubManager.csproj" />
+	<ItemGroup Condition="'$(UseProjectReference)' == 'true'">
+		<ProjectReference Include="..\..\CLIFramework\CLIFramework\CLIFramework.csproj" />
+		<ProjectReference Include="..\..\GitHubManager\GitHubManager\GitHubManager.csproj" />
 	</ItemGroup>
 
 	<!-- NuGet Package References -->
 	<ItemGroup>
-		<PackageReference Include="NanoDNA.CLIFramework" Version="0.1.1" Condition="'$(Configuration)' == 'Release'" />
-		<PackageReference Include="NanoDNA.GitHubManager" Version="0.1.1" Condition="'$(Configuration)' == 'Release'" />
+		<PackageReference Include="NanoDNA.CLIFramework" Version="0.2.0" Condition="'$(Configuration)' == 'Release'" />
+		<PackageReference Include="NanoDNA.GitHubManager" Version="0.2.1" Condition="'$(Configuration)' == 'Release'" />
+	</ItemGroup>
+
+	<!-- Include Items to Edit -->
+	<ItemGroup>
+		<!-- Project Documents -->
+		<None Include="..\README.md" Link="Docs\README.md" />
+		<None Include="..\Directory.Build.props" Link="Docs\Directory.Build.props" />
+		<None Include="..\LICENSE" Link="Docs\LICENSE" />
+
+		<!-- Workflow Scripts -->
+		<None Include="..\.github\workflows\build.yml" Link="Workflows\build.yml" />
+		<None Include="..\.github\workflows\publish.yml" Link="Workflows\publish.yml" />
 	</ItemGroup>
 
 </Project>
