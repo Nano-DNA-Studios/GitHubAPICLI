@@ -89,6 +89,7 @@ namespace GitHubAPICLI.Commands
         private void FillRepoWorkflows(Repository repo)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+            RegisteredRunnerManager runnerManager = new RegisteredRunnerManager(settings.CachePath);
 
             WorkflowRun[] workflows = repo.GetWorkflows();
 
@@ -110,10 +111,11 @@ namespace GitHubAPICLI.Commands
 
                 Console.WriteLine($"Runner {runner.Name} started for Workflow {workflow.ID} in {repo.FullName}");
 
-                settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
+                runnerManager.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
             }
 
             settings.SaveSettings();
+            runnerManager.Save();
         }
     }
 }

@@ -45,12 +45,6 @@ namespace GitHubAPICLI.Application
         public int WebhookServerPort { get; private set; }
 
         /// <summary>
-        /// List of Active Runners Registered by the Application
-        /// </summary>
-        [JsonProperty("RegisteredRunners")]
-        public List<RegisteredRunner> RegisteredRunners { get; private set; } = new List<RegisteredRunner>();
-
-        /// <summary>
         /// List of Action Worker to Fill in A Repos Workflows
         /// </summary>
         [JsonProperty("ActionWorkerConfigs")]
@@ -133,30 +127,6 @@ namespace GitHubAPICLI.Application
 
             ActionWorkerConfigs.Remove(ActionWorkerConfigs.FirstOrDefault((repoWorker) => repoWorker.SameRepoAs(worker)));
             ActionWorkerConfigs.Add(worker);
-        }
-
-
-        /// <summary>
-        /// Adds a Registered Action Worker that has been Spawned by the CLI Application
-        /// </summary>
-        /// <param name="runner"></param>
-        public void AddRegisteredRunner(RegisteredRunner runner)
-        {
-            RegisteredRunners.Add(runner);
-        }
-
-        /// <summary>
-        /// Removes a Registered Action Worker that has been Spawned by the CLI Application once its been Unregistered
-        /// </summary>
-        /// <param name="runner">Registered Runner Instance Info to remove</param>
-        public void RemoveRegisteredRunner(RegisteredRunner runner)
-        {
-            if (!RegisteredRunners.Any((regRunner) => regRunner.RunnerID == runner.RunnerID && regRunner.RunnerName == runner.RunnerName))
-                return;
-
-            RegisteredRunner remRunner = RegisteredRunners.First((regRunner) => regRunner.RunnerID == runner.RunnerID && regRunner.RunnerName == runner.RunnerName);
-
-            RegisteredRunners.Remove(remRunner);
         }
     }
 }
