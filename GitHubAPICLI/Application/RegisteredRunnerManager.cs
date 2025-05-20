@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,7 +33,6 @@ namespace GitHubAPICLI.Application
         public RegisteredRunnerManager(string cachePath)
         {
             _CachePath = cachePath;
-            Console.WriteLine($"Cache Path In Class: {_CachePath}");
             _RegisteredRunnersPath = Path.Combine(_CachePath, "RegisteredRunners.json");
             RegisteredRunners = Load();
         }
