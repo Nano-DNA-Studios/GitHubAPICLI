@@ -28,6 +28,7 @@ namespace GitHubAPICLI.Commands
         public override void Execute(string[] args)
         {
             GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+            RegisteredRunnerManager runnerManager = new RegisteredRunnerManager(settings.CachePath);
 
             if (string.IsNullOrEmpty(settings.GitHubPAT))
             {
@@ -66,8 +67,9 @@ namespace GitHubAPICLI.Commands
             runner.SyncInfo();
 
             settings.AddActionWorkerConfig(new ActionWorkerConfig(repoOwner, repoName, runnerImage));
-            settings.AddRegisteredRunner(new RegisteredRunner(repoOwner, repoName, runner.ID, runner.Name));
+            runnerManager.AddRegisteredRunner(new RegisteredRunner(repoOwner, repoName, runner.ID, runner.Name));
             settings.SaveSettings();
+            runnerManager.Save();
 
             Console.WriteLine($"Runner {runner.Name} added to repository {repo.Name}.");
         }

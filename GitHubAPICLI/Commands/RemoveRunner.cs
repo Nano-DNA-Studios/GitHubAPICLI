@@ -91,14 +91,14 @@ namespace GitHubAPICLI.Commands
         /// <param name="args">CLI Args inputted by the User</param>
         private void RemoveRunnerByID(string[] args)
         {
-            GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+            string cachePath = Setting.LoadSettings<GitHubCLISettings>().CachePath;
+            RegisteredRunnerManager runnerManager = new RegisteredRunnerManager(cachePath);
 
             string repoOwner = args[0];
             string repoName = args[1];
             string runnerIDStr = args[2];
 
             Repository repo = Repository.GetRepository(repoOwner, repoName);
-
             Runner runner = GetRunnerByID(repo, runnerIDStr);
 
             if (runner == null)
@@ -113,8 +113,8 @@ namespace GitHubAPICLI.Commands
                 return;
             }
 
-            if (settings.RegisteredRunners.Any((regRunner) => regRunner.RepoName == repo.Name && regRunner.RepoOwner == repo.Owner.Login))
-                settings.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
+            if (runnerManager.RegisteredRunners.Any((regRunner) => regRunner.RepoName == repo.Name && regRunner.RepoOwner == repo.Owner.Login))
+                runnerManager.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
 
             if (Docker.ContainerExists(runner.Name.ToLower()))
                 Docker.RemoveContainer(runner.Name.ToLower(), true);
@@ -128,7 +128,8 @@ namespace GitHubAPICLI.Commands
         /// <param name="repo">Repository to Remove the Runners from</param>
         private void RemoveRepoRunners(Repository repo)
         {
-            GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+            string cachePath = Setting.LoadSettings<GitHubCLISettings>().CachePath;
+            RegisteredRunnerManager runnerManager = new RegisteredRunnerManager(cachePath);
 
             Runner[] runners = repo.GetRunners();
 
@@ -148,8 +149,8 @@ namespace GitHubAPICLI.Commands
                     continue;
                 }
 
-                if (settings.RegisteredRunners.Any((regRunner) => regRunner.RepoName == repo.Name && regRunner.RepoOwner == repo.Owner.Login))
-                    settings.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
+                if (runnerManager.RegisteredRunners.Any((regRunner) => regRunner.RepoName == repo.Name && regRunner.RepoOwner == repo.Owner.Login))
+                    runnerManager.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
 
                 if (Docker.ContainerExists(runner.Name.ToLower()))
                     Docker.RemoveContainer(runner.Name.ToLower(), true);
@@ -157,7 +158,7 @@ namespace GitHubAPICLI.Commands
                 Console.WriteLine($"Removed Runner {runner.Name} (ID : {runner.ID}) from {repo.FullName}");
             }
 
-            settings.SaveSettings();
+            runnerManager.Save();
             Console.WriteLine($"Removed all Runners from {repo.FullName}");
         }
 
@@ -166,19 +167,20 @@ namespace GitHubAPICLI.Commands
         /// </summary>
         private void RemoveRegisteredRunners()
         {
-            GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+            string cachePath = Setting.LoadSettings<GitHubCLISettings>().CachePath;
+            RegisteredRunnerManager runnerManager = new RegisteredRunnerManager(cachePath);
 
-            if (settings.RegisteredRunners == null || settings.RegisteredRunners.Count == 0)
+            if (runnerManager.RegisteredRunners == null || runnerManager.RegisteredRunners.Count == 0)
             {
                 Console.WriteLine("No Registered Runners Found");
                 return;
             }
 
-            RegisteredRunner currentRunner = settings.RegisteredRunners[0];
+            RegisteredRunner currentRunner = runnerManager.RegisteredRunners[0];
 
             Console.WriteLine("Removing all registered runners...");
 
-            foreach (RegisteredRunner registeredRunner in settings.RegisteredRunners.ToArray())
+            foreach (RegisteredRunner registeredRunner in runnerManager.RegisteredRunners.ToArray())
             {
                 currentRunner = registeredRunner;
 
@@ -190,8 +192,8 @@ namespace GitHubAPICLI.Commands
                     continue;
                 }
 
-                if (settings.RegisteredRunners.Any((runner) => runner.SameAs(registeredRunner)))
-                    settings.RemoveRegisteredRunner(registeredRunner);
+                if (runnerManager.RegisteredRunners.Any((runner) => runner.SameAs(registeredRunner)))
+                    runnerManager.RemoveRegisteredRunner(registeredRunner);
 
                 if (Docker.ContainerExists(registeredRunner.RunnerName.ToLower()))
                     Docker.RemoveContainer(registeredRunner.RunnerName.ToLower(), true);
@@ -199,7 +201,7 @@ namespace GitHubAPICLI.Commands
                 Console.WriteLine($"Removed Registered Runner {currentRunner.RunnerName}(ID : {currentRunner.RunnerID}) from {repository.FullName}");
             }
 
-            settings.SaveSettings();
+            runnerManager.Save();
             Console.WriteLine("Removed all registered runners");
             return;
         }

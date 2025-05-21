@@ -14,6 +14,9 @@ namespace GitHubAPICLI.Commands
     /// <summary>
     /// Starts a Thread Blocking Webhooks Server for GitHub API Action Workflows
     /// </summary>
+    /// <summary>
+    /// Starts a Thread Blocking Webhooks Server for GitHub API Action Workflows
+    /// </summary>
     internal class StartServer : Command
     {
         /// <summary>
@@ -110,7 +113,8 @@ namespace GitHubAPICLI.Commands
         /// <param name="workflowRun">Workflow Run Instance</param>
         private void AddRunner(WorkflowRun workflowRun)
         {
-            GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+            string cachePath = Setting.LoadSettings<GitHubCLISettings>().CachePath;
+            RegisteredRunnerManager runnerManager = new RegisteredRunnerManager(cachePath);
 
             Repository repo = Repository.GetRepository(workflowRun.Repository.Owner.Login, workflowRun.Repository.Name);
 
@@ -123,19 +127,19 @@ namespace GitHubAPICLI.Commands
 
             runner.Start();
 
-            settings.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
+            runnerManager.AddRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
 
             lock (threadLock)
-                settings.SaveSettings();
+                runnerManager.Save();
 
             Console.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Added Runner {runner.Name} ({runner.ID}) to {repo.FullName}");
 
             runner.StopRunner += (runnner) =>
             {
-                settings.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
+                runnerManager.RemoveRegisteredRunner(new RegisteredRunner(repo.Owner.Login, repo.Name, runner.ID, runner.Name));
 
                 lock (threadLock)
-                    settings.SaveSettings();
+                    runnerManager.Save();
 
                 Console.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] Removed Runner {runner.Name} ({runner.ID}) to {repo.FullName}");
             };
@@ -148,7 +152,7 @@ namespace GitHubAPICLI.Commands
         /// <returns>The Docker Image to use</returns>
         private string GetDockerImage(Repository repo)
         {
-            GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+            GitHubCLISettings settings = Setting.LoadSettings<GitHubCLISettings>();
 
             ActionWorkerConfig config = settings.ActionWorkerConfigs.FirstOrDefault((config) => config.RepoName == repo.Name);
 
@@ -172,7 +176,7 @@ namespace GitHubAPICLI.Commands
         /// <param name="workflowRun">Workflow Run that is having it's Logs saved</param>
         private void SaveLogs(Repository repo, WorkflowRun workflowRun)
         {
-            GitHubCLISettings settings = (GitHubCLISettings)DataManager.Settings;
+            GitHubCLISettings settings = Setting.LoadSettings<GitHubCLISettings>();
 
             WorkflowRun workRun = repo.GetWorkflows().FirstOrDefault((run) => run.ID == workflowRun.ID);
 
