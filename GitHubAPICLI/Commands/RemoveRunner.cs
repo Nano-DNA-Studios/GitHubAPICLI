@@ -185,8 +185,12 @@ namespace GitHubAPICLI.Commands
                 currentRunner = registeredRunner;
 
                 Repository repository = Repository.GetRepository(registeredRunner.RepoOwner, registeredRunner.RepoName);
+                Runner[] runners = repository.GetRunners();
 
-                if (repository.GetRunners().Any((runner) => runner.ID == registeredRunner.RunnerID) && !repository.TryRemoveRunner(registeredRunner.RunnerID))
+                if (runners == null || runners.Length == 0)
+                    continue;
+
+                if (runners.Any((runner) => runner.ID == registeredRunner.RunnerID) && !repository.TryRemoveRunner(registeredRunner.RunnerID))
                 {
                     Console.WriteLine($"Failed to remove registered runner {registeredRunner.RunnerName} (ID : {registeredRunner.RunnerID}) from {repository.FullName}");
                     continue;
